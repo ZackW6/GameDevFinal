@@ -1,13 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
-
-public class Player : MonoBehaviour
+[RequireComponent(typeof(Movement))]
+public class Player : Character
 {
-    // Start is called before the first frame update
+    /* Add an inventory
+        Define health, stats, and movment
+        */
+
+
     void Start()
     {
-        
+       this.health = new Health(10); 
+       this.stats = new  Statistics();
+       this.movement = new Movement(stats);
     }
 
     // Update is called once per frame

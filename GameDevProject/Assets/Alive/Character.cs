@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-   /*
-    Things to do:
-        create ---
-            health
-            statistics
-            movement
-            inventory
+   
+    protected Health health;
+    protected Statistics stats;
+    protected Movement movement;
 
-   */
+    /*
+ Things to do:
+     create ---
+         health
+         statistics
+         movement
+
+*/
+
 }
