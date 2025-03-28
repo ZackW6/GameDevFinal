@@ -1,18 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Statistics;
 
-public class Consumable : MonoBehaviour
+public class Consumable : Item
 {
-    // Start is called before the first frame update
-    void Start()
+    public Consumable(string name) 
+        : base(name, new Statistics(SetMarkers.Health))
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void Interact(Character enactingCharacter){
+        //TODO heal character based on health stat, don't go over max
+        Destroy(this);
     }
 }

@@ -1,18 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
 using UnityEngine;
-
-public class Item : MonoBehaviour
+using static Statistics;
+[RequireComponent(typeof(RectTransform))]
+public abstract class Item : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    private bool equipped = false;
+    private bool dropped = false;
+    protected readonly Statistics stats;
+
+    public RectTransform rectTransform;
+
+    public readonly string title;
+
+    public Item(string title, Statistics stats){
+        this.title = title;
+        this.stats = stats;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public bool Equipped(){
+        return equipped;
+    }
+
+    public void Equip(bool equipped){
+        this.equipped = equipped;
     }
 }
