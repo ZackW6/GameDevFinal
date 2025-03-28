@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+   
+    protected Health health;
+    protected Statistics stats;
+    protected Movement movement;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    /*
+ Things to do:
+     create ---
+         health
+         statistics
+         movement
+
+*/
+
 }
