@@ -12,7 +12,6 @@ public class Player : Character
 
     void Start()
     {
-       this.health = new Health(10); 
        this.stats = new  Statistics();
        this.movement = new Movement(stats);
     }

@@ -4,14 +4,11 @@ using System.Runtime.ConstrainedExecution;
 using UnityEngine;
 using static Statistics;
 [RequireComponent(typeof(RectTransform))]
-public abstract class Item : MonoBehaviour
+public abstract class Item : DragDrop
 {
     private bool equipped = false;
     private bool dropped = false;
     protected readonly Statistics stats;
-
-    public RectTransform rectTransform;
-
     public readonly string title;
 
     public Item(string title, Statistics stats){

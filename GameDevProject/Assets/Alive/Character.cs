@@ -5,7 +5,6 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
    
-    protected Health health;
     protected Statistics stats;
     protected Movement movement;
 
