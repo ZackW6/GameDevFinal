@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
+using Unity.Collections;
+using UnityEditor.Callbacks;
 using UnityEngine;
-[RequireComponent(typeof(Movement))]
+
+  /* 
+       1. Find a way to input stats into movment
+   
+   
+    */
 public class Player : Character
 {
-    /* Add an inventory
-        Define health, stats, and movment
-        */
 
 
     void Start()
@@ -19,6 +23,10 @@ public class Player : Character
     // Update is called once per frame
     void Update()
     {
-        
+        float a = Input.GetAxis("Horizontal");
+        float b = Input.GetAxis("Vertical");
+        Vector2 dir = new Vector2(a, b);
+
+      movement.Move(dir);
     }
 }
