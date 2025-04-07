@@ -42,14 +42,15 @@ public class Movement : MonoBehaviour
 
     public void Move(Vector2 input){
 
-      if(!isFalling && math.abs(rb.velocity.x) < 10){
+      if( math.abs(rb.velocity.x) < 5){
         rb.velocity += input;
-      //rb.AddForce( input, ForceMode2D.Impulse);
-      }
+    //rb.AddForce( input, ForceMode2D.Impulse);
+      // ,         
+      }                                   
     }
 
     public void Jump(){
-        Vector2 dir = new Vector2(0, 75);
+        Vector2 dir = new Vector2(0, 40);
         if(!isFalling){
         rb.AddForce(dir, ForceMode2D.Impulse);
 
@@ -61,20 +62,11 @@ public class Movement : MonoBehaviour
       private void OnCollisionEnter2D(Collision2D other)
     {
 
-       ContactPoint2D[] cP = new ContactPoint2D[other.contactCount];
-       other.GetContacts(cP);
-       var y = 0;
-       foreach(ContactPoint2D c in cP){
-          if(c.point.y < transform.position.y){
-            y ++;
-            break;
-          }
-       }
-       // for( int i = 0; i <  ; i++)
-        if (other.gameObject.CompareTag("Cave") && y > 0){
+     
+        if (other.gameObject.CompareTag("Cave")){
             isFalling = false;
         }
-        print(y);
+        print(isFalling);
     }
 
     private void OnCollisionExit2D(Collision2D other)
