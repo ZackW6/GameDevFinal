@@ -16,17 +16,17 @@ public class Player : Character
 
     void Start()
     {
-       this.stats = new  Statistics();
-       this.movement = new Movement(stats);
+    
+      // stats = new Statistics();
+
+      movement = gameObject.GetComponent<Movement>();
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        float a = Input.GetAxis("Horizontal");
-        float b = Input.GetAxis("Vertical");
-        Vector2 dir = new Vector2(a, b);
-
-      movement.Move(dir);
+       
     }
 }
