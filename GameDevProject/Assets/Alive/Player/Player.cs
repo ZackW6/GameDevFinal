@@ -17,7 +17,7 @@ public class Player : Character
     void Start()
     {
     
-       stats = new Statistics();
+      // stats = new Statistics();
 
       movement = gameObject.GetComponent<Movement>();
 
@@ -27,10 +27,6 @@ public class Player : Character
     // Update is called once per frame
     void Update()
     {
-        float a = Input.GetAxis("Horizontal");
-        float b = Input.GetAxis("Vertical");
-        Vector2 dir = new Vector2(a, b);
-
-      movement.Move(dir);
+       
     }
 }

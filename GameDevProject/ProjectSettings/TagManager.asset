@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Cave
   layers:
   - Default
   - TransparentFX
@@ -52,4 +53,7 @@ TagManager:
     locked: 0
   - name: Placeholder
     uniqueID: 1252466947
+    locked: 0
+  - name: Player
+    uniqueID: 2324605229
     locked: 0
