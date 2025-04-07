@@ -21,8 +21,9 @@ public class CameraFollower : MonoBehaviour
             // crash physics
 
         
-        transform.position.Set ((float)player.transform.position.x,(float)player.transform.position.y, (float)transform.position.z);
-
+      //  transform.position.Set ((float)player.transform.position.x,(float)player.transform.position.y, (float)transform.position.z);
+        transform.position = new Vector3((float)player.transform.position.x,(float)player.transform.position.y, (float)transform.position.z);
+ 
         // Vector3 diffPos = player.transform.position - transform.position;
         // print(diffPos.magnitude);
 

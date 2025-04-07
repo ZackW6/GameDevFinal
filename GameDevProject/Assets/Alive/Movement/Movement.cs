@@ -61,12 +61,20 @@ public class Movement : MonoBehaviour
       private void OnCollisionEnter2D(Collision2D other)
     {
 
-        bool under = other.GetContacts();
-        for( int i = 0; i <  ; i++)
-        if (other.gameObject.CompareTag("Cave"))
-    {
+       ContactPoint2D[] cP = new ContactPoint2D[other.contactCount];
+       other.GetContacts(cP);
+       var y = 0;
+       foreach(ContactPoint2D c in cP){
+          if(c.point.y < transform.position.y){
+            y ++;
+            break;
+          }
+       }
+       // for( int i = 0; i <  ; i++)
+        if (other.gameObject.CompareTag("Cave") && y > 0){
             isFalling = false;
         }
+        print(y);
     }
 
     private void OnCollisionExit2D(Collision2D other)
@@ -75,6 +83,7 @@ public class Movement : MonoBehaviour
         {
             isFalling = true;
         }
+        print(isFalling);
     }
     /* 
     * Get inputs 
