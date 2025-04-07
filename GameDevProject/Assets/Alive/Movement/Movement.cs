@@ -15,84 +15,93 @@ using UnityEngine.Animations;
 public class Movement : MonoBehaviour
 {
 
-    private Statistics playerStats; 
-    private Rigidbody2D rb;
+  private Statistics playerStats;
+  private Rigidbody2D rb;
 
-    private bool isFalling = false;
-    private float jumpCount = 0f;
-    public Movement(Statistics stats){
-         playerStats = stats;
-    }
-    public void Awake(){
-       ;
-         rb = gameObject.GetComponent<Rigidbody2D>();
-    }
+  private bool isFalling = false;
+  private float jumpCount = 0f;
+  public Movement(Statistics stats)
+  {
+    playerStats = stats;
+  }
+  public void Awake()
+  {
+    rb = gameObject.GetComponent<Rigidbody2D>();
+  }
 
-    public void Update()
+  public void Update()
+  {
+    float a = Input.GetAxis("Horizontal");
+    float b = Input.GetAxis("Vertical");
+    Vector2 dir = new Vector2(a, 0);
+
+    Move(dir * 0.5f);
+    if (Input.GetKeyDown(KeyCode.Space))
     {
-        float a = Input.GetAxis("Horizontal");
-        float b = Input.GetAxis("Vertical");
-        Vector2 dir = new Vector2(a, 0);
-
-        Move(dir * 0.5f);
-      if(Input.GetKeyDown(KeyCode.Space)){
-        Jump();
-      }
+      Jump();
     }
+  }
 
-    public void Move(Vector2 input){
+  public void Move(Vector2 input)
+  {
 
-      if(!isFalling && math.abs(rb.velocity.x) < 10){
-        rb.velocity += input;
+    if (!isFalling && math.abs(rb.velocity.x) < 10)
+    {
+      rb.velocity += input;
       //rb.AddForce( input, ForceMode2D.Impulse);
+    }
+  }
+
+  public void Jump()
+  {
+    Vector2 dir = new Vector2(0, 75);
+    if (!isFalling)
+    {
+      rb.AddForce(dir, ForceMode2D.Impulse);
+
+    }
+  }
+
+
+
+  private void OnCollisionEnter2D(Collision2D other)
+  {
+
+    ContactPoint2D[] cP = new ContactPoint2D[other.contactCount];
+    other.GetContacts(cP);
+    var y = 0;
+    foreach (ContactPoint2D c in cP)
+    {
+      if (c.point.y < transform.position.y)
+      {
+        y++;
+        break;
       }
     }
-
-    public void Jump(){
-        Vector2 dir = new Vector2(0, 75);
-        if(!isFalling){
-        rb.AddForce(dir, ForceMode2D.Impulse);
-
-        }
-    }
-
- 
-        
-      private void OnCollisionEnter2D(Collision2D other)
+    // for( int i = 0; i <  ; i++)
+    if (other.gameObject.CompareTag("Cave") && y > 0)
     {
-
-       ContactPoint2D[] cP = new ContactPoint2D[other.contactCount];
-       other.GetContacts(cP);
-       var y = 0;
-       foreach(ContactPoint2D c in cP){
-          if(c.point.y < transform.position.y){
-            y ++;
-            break;
-          }
-       }
-       // for( int i = 0; i <  ; i++)
-        if (other.gameObject.CompareTag("Cave") && y > 0){
-            isFalling = false;
-        }
-        print(y);
+      isFalling = false;
     }
+    print(y);
+  }
 
-    private void OnCollisionExit2D(Collision2D other)
+  private void OnCollisionExit2D(Collision2D other)
+  {
+    if (other.gameObject.CompareTag("Cave"))
     {
-        if (other.gameObject.CompareTag("Cave"))
-        {
-            isFalling = true;
-        }
-        print(isFalling);
+      isFalling = true;
     }
-    /* 
-    * Get inputs 
-            movment 
+    print(isFalling);
+  }
+  /* 
+  * Get inputs 
+          movment 
 
-        Add constraitnes based on the stats of the character
-        change the position and rotation of the character based on stats
+      Add constraitnes based on the stats of the character
+      change the position and rotation of the character based on stats
 
 
 
-    */
+  */
 }
