@@ -52,7 +52,7 @@ public class Movement : MonoBehaviour
     public void Jump(){
         Vector2 dir = new Vector2(0, 40);
         if(!isFalling){
-        rb.AddForce(dir, ForceMode2D.Impulse);
+          rb.AddForce(dir, ForceMode2D.Impulse);
 
         }
     }
