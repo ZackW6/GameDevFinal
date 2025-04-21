@@ -33,7 +33,11 @@ public class Statistics{
     */
     public float Get(string key){
         float val = 0;
-        stats.TryGetValue(key, out val);
+        try{
+            stats.TryGetValue(key, out val);
+        }catch {
+            
+        }
         return val;
     }
 
