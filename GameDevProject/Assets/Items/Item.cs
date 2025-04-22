@@ -1,24 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using static Statistics;
-public abstract class Item : MonoBehaviour
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Collider2D))]
+public abstract class Item : DragDrop
 {
     private bool equipped = false;
     private bool dropped = false;
-    protected readonly Statistics stats;
-    public readonly string title;
-    public GameObject prefab;
+    protected Statistics stats;
+    public string title;
+    private Rigidbody2D rb;
+    private Collider2D col;
+    public override void Awake()
+    {
+        base.Awake();
+        this.rb = this.GetComponent<Rigidbody2D>();
+        this.col = this.GetComponent<Collider2D>();
+        rb.simulated = true;
+        col.enabled = true;
+    }
 
-    public PhysicalItem physicalItem;
+    public override void OnBeginDrag(PointerEventData data){
+        base.OnBeginDrag(data);
+        Drop(false);
+    }
 
-    public Item(string title, Statistics stats){
-        this.title = title;
-        this.stats = stats;
-        Instantiate(prefab);
-        // prefab.AddComponent(InventoryItem);
-        physicalItem.Put(this.transform.position, Quaternion.identity);
+    public override void OnEndDrag(PointerEventData data){
+        base.OnEndDrag(data);
+        if (!container){
+            Drop(true);
+        }else{
+            Equip(true);
+            Drop(false);
+        }
     }
 
     public bool IsEquipped(){
@@ -32,21 +50,25 @@ public abstract class Item : MonoBehaviour
     public void Drop(bool dropped){
         this.dropped = dropped;
         if (dropped){
-            Vector2 prevVec = physicalItem.GetPosition();
-            Quaternion prevRot = physicalItem.GetRotation();
-            physicalItem.Destroy();
-            Instantiate(prefab);
-            physicalItem.Put(prevVec, prevRot);
+            rb.simulated = true;
+            col.enabled = true;
         }else{
-            Vector2 prevVec = physicalItem.GetPosition();
-            Quaternion prevRot = physicalItem.GetRotation();
-            physicalItem.Destroy();
-            Instantiate(prefab);
-            physicalItem.Put(prevVec, prevRot);
+            rb.simulated = false;
+            col.enabled = false;
         }
     }
 
     public bool IsDropped(){
         return dropped;
+    }
+
+    public void Hide(bool hide){
+        rb.simulated = !hide;
+        col.enabled = !hide;
+        this.enabled = !hide;
+    }
+
+    public Statistics GetStatistics(){
+        return stats;
     }
 }

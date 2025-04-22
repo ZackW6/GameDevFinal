@@ -10,7 +10,7 @@ public class DropSlot : MonoBehaviour, IDropHandler
     private RectTransform rectTransform;
 
     private Item droppedItem;
-    private void Awake()
+    protected virtual void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
     }
@@ -19,6 +19,9 @@ public class DropSlot : MonoBehaviour, IDropHandler
     {
         if (eventData.pointerDrag != null){
             eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
+            if (eventData.pointerDrag.GetComponent<DragDrop>()){
+                eventData.pointerDrag.GetComponent<DragDrop>().SetContainer(this);
+            }
         }
     }
 }
