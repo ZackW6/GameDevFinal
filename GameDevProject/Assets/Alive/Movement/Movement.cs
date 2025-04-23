@@ -32,7 +32,7 @@ public class Movement : MonoBehaviour
         b = Input.GetAxis("Vertical");
         Move(Vector2.right * hori * 39f * Time.deltaTime);
 
-        if (Input.GetKeyDown(KeyCode.Space)) Jump();
+        // if (Input.GetKeyDown(KeyCode.Space)) Jump();
 
         // if (hori > 0 || hori < 0) CamMan.Turn();
 
