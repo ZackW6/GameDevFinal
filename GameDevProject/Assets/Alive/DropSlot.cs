@@ -8,19 +8,19 @@ using UnityEngine.EventSystems;
 public class DropSlot : MonoBehaviour, IDropHandler
 {
     private RectTransform rectTransform;
-
-    private Item droppedItem;
-    protected virtual void Awake()
+    public DragDrop droppedItem;
+    public virtual void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
     }
 
-    public void OnDrop(PointerEventData eventData)
+    public virtual void OnDrop(PointerEventData eventData)
     {
         if (eventData.pointerDrag != null){
             eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
             if (eventData.pointerDrag.GetComponent<DragDrop>()){
                 eventData.pointerDrag.GetComponent<DragDrop>().SetContainer(this);
+                droppedItem = eventData.pointerDrag.GetComponent<DragDrop>();
             }
         }
     }
