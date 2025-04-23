@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Statistics{
+public class Statistics: MonoBehaviour{
     Dictionary<string, float> stats;
 
     public static class SetMarkers{

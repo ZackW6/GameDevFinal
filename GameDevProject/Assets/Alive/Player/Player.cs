@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net.NetworkInformation;
 using Unity.Collections;
 using UnityEditor.Callbacks;
@@ -17,10 +18,8 @@ public class Player : Character
     void Start()
     {
     
-      // stats = new Statistics();
-
-      movement = gameObject.GetComponent<Movement>();
-
+      double x =  statistics.Get("HI");
+      print(x + "s");
 
     }
 
