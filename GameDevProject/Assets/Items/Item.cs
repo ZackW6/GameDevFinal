@@ -9,12 +9,12 @@ using static Statistics;
 [RequireComponent(typeof(Collider2D))]
 public abstract class Item : DragDrop
 {
-    private bool equipped = false;
     private bool dropped = false;
     protected Statistics stats;
     public string title;
     private Rigidbody2D rb;
     private Collider2D col;
+    private PlayerInventory playerInventory;
     public override void Awake()
     {
         base.Awake();
@@ -22,10 +22,12 @@ public abstract class Item : DragDrop
         this.col = this.GetComponent<Collider2D>();
         rb.simulated = true;
         col.enabled = true;
+        playerInventory = FindObjectOfType<PlayerInventory>();
     }
 
     public override void OnBeginDrag(PointerEventData data){
         base.OnBeginDrag(data);
+        playerInventory.addDropped(this);
         Drop(false);
     }
 
@@ -34,17 +36,9 @@ public abstract class Item : DragDrop
         if (!container){
             Drop(true);
         }else{
-            Equip(true);
             Drop(false);
+            Equip();
         }
-    }
-
-    public bool IsEquipped(){
-        return equipped;
-    }
-
-    public void Equip(bool equipped){
-        this.equipped = equipped;
     }
 
     public void Drop(bool dropped){
@@ -58,6 +52,9 @@ public abstract class Item : DragDrop
         }
     }
 
+    public void Equip(){
+        playerInventory.checkEquipped();
+    }
     public bool IsDropped(){
         return dropped;
     }
