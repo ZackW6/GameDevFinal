@@ -6,12 +6,10 @@ using static Statistics;
 
 public class Weapon : Item
 {
-    public Weapon(string name)
-        : base(name, new Statistics(SetMarkers.Durability, SetMarkers.AttackSpeed, SetMarkers.Damage, SetMarkers.Range, SetMarkers.BonusHealth))
-    {
-        
+        public override void Awake(){
+        base.Awake();
+        stats = new Statistics(SetMarkers.Durability, SetMarkers.AttackSpeed, SetMarkers.Damage, SetMarkers.Range, SetMarkers.BonusHealth);
     }
-
     public float GetDurability(){
         return stats.Get(SetMarkers.Durability);
     }

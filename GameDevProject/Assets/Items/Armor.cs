@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,10 +6,10 @@ using static Statistics;
 
 public class Armor : Item
 {
-    public Armor(string name)
-        : base(name, new Statistics(SetMarkers.Durability, SetMarkers.Protection, SetMarkers.BonusHealth))
+    public override void Awake()
     {
-
+        base.Awake();
+        stats = new Statistics(SetMarkers.Durability, SetMarkers.Protection, SetMarkers.BonusHealth);
     }
 
     public float GetProtection(){

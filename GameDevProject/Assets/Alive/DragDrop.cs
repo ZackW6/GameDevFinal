@@ -9,29 +9,36 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
 {
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
-    private void Awake()
+    protected DropSlot container = null;
+
+    public virtual void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
     }
-    public void OnBeginDrag(PointerEventData eventData)
+    public virtual void OnBeginDrag(PointerEventData eventData)
     {
+        container = null;
         canvasGroup.alpha = 0.6f;
         canvasGroup.blocksRaycasts = false;
     }
     
-    public void OnDrag(PointerEventData eventData)
+    public virtual void OnDrag(PointerEventData eventData)
     {
-        rectTransform.anchoredPosition +=eventData.delta;
+        rectTransform.anchoredPosition +=eventData.delta/64.71071f;
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    public virtual void OnEndDrag(PointerEventData eventData)
     {
         canvasGroup.alpha = 1;
         canvasGroup.blocksRaycasts = true;
     }
+
+    public virtual void SetContainer(DropSlot slot){
+        container = slot;
+    }
     
-    public void OnPointerDown(PointerEventData eventData)
+    public virtual void OnPointerDown(PointerEventData eventData)
     {
 
     }

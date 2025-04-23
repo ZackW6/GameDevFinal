@@ -5,10 +5,10 @@ using static Statistics;
 
 public class Consumable : Item
 {
-    public Consumable(string name) 
-        : base(name, new Statistics(SetMarkers.Health))
+    public override void Awake()
     {
-
+        base.Awake();
+        stats = new Statistics(SetMarkers.Health);
     }
 
     public void Interact(Character enactingCharacter){
