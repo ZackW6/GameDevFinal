@@ -37,4 +37,20 @@ public class Inventory : MonoBehaviour
     public bool removeEquipped(Item equipped){
         return this.equippedItems.Remove(equipped);
     }
+
+    public void Kill(){
+        PlayerInventory p = FindObjectOfType<PlayerInventory>();
+        unequippedItems.ForEach((data)=>{
+            data.transform.position = transform.position;
+            data.Hide(false);
+            p.addDropped(data);
+        });
+        equippedItems.ForEach((data)=>{
+            data.transform.position = transform.position;
+            data.Hide(false);
+            p.addDropped(data);
+        });
+        unequippedItems.Clear();
+        equippedItems.Clear();
+    }
 }
