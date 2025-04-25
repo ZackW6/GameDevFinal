@@ -1,3 +1,4 @@
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -7,27 +8,29 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
 
-    private Statistics playerStats;
-    private Rigidbody2D rb;
-    private CameraManager CamMan;
-    private bool grounded;
-    private float hori;
-    private Vector2 moveDirection;
-    private float moveSpeed = 10f;
-    private float jumpForce = 10f;
-    private bool readyToJump;
-    private float jumpCooldown = 5f;
-    private LayerMask Platforms;
-    private float groundDrag = 5f;
-    public Movement(Statistics stats)
-    {
-        playerStats = stats;
-    }
+    [SerializeField]private Statistics playerStats;
+    [SerializeField]private Rigidbody2D rb;
+    [SerializeField]private CameraManager CamMan;
+    [SerializeField]private bool grounded;
+    [SerializeField]private float hori;
+    [SerializeField]private Vector2 moveDirection;
+    [SerializeField]private float moveSpeed = 100f;
+    [SerializeField]private float jumpForce = 10f;
+    [SerializeField]private bool readyToJump;
+    [SerializeField]private float jumpCooldown = .25f;
+    [SerializeField]private LayerMask platLayer;
+    [SerializeField]private float groundDrag = 5f;
+    [SerializeField]private float airMultiplier = .2f;
+    // public Movement(Statistics stats)
+    // {
+    //     playerStats = stats;
+    // }
 
     public void Awake()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         CamMan = GetComponent<CameraManager>();
+        
     }
 
     void Start()
@@ -37,24 +40,24 @@ public class Movement : MonoBehaviour
 
     public void Update()
     {
-        grounded = Physics2D.Raycast(transform.position, Vector2.down, 0.7431644f, Platforms); // Checks if player is on ground. Calculates Drag
+        grounded = Physics2D.Raycast(transform.position, Vector2.down, 0.7431644f, platLayer); // Checks if player is on ground. Calculates Drag
+        print(grounded);
         MyInput();
         SpeedControl();
-        if (grounded)
-            rb.drag = groundDrag;
-        else
-            rb.drag = 0;
-        
+        rb.drag = grounded ? groundDrag : 2f;
+
         // if (hori > 0 || hori < 0) CamMan.Turn();
     }
     public void FixedUpdate()
     {
         Move();
     }
-    
-    private void MyInput(){
+
+    public void MyInput()
+    {
         hori = Input.GetAxis("Horizontal");
-        if(Input.GetKey(KeyCode.Space) && readyToJump && grounded){
+        if (Input.GetKey(KeyCode.Space) && readyToJump && grounded)
+        {
             readyToJump = false;
             Jump();
             Invoke(nameof(ResetJump), jumpCooldown);
@@ -62,7 +65,7 @@ public class Movement : MonoBehaviour
     }
 
     // Makes sure speed does not exceed limit
-    private void SpeedControl()
+    public void SpeedControl()
     {
         Vector2 flatVel = new Vector2(rb.velocity.x, 0f);
 
@@ -74,18 +77,22 @@ public class Movement : MonoBehaviour
 
     }
     // Calculates the x direction of player on ground and air. Does not allow player the jump.
-    private void Move(){
+    public void Move()
+    {
         moveDirection = Vector2.right * hori;
-        if(grounded) rb.AddForce(moveDirection.normalized * moveSpeed * 30f, ForceMode2D.Force);
-        else if(!grounded) rb.AddForce(moveDirection.normalized * moveSpeed * 30f /*airMultiplier*/, ForceMode2D.Force);
+
+        if (grounded) rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode2D.Force);
+        else if (!grounded) rb.AddForce(moveDirection.normalized * moveSpeed * airMultiplier, ForceMode2D.Force);
     }
 
-    private void Jump(){
+    public void Jump()
+    {
         rb.velocity = new Vector2(rb.velocity.x, 0f);
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
-    private void ResetJump(){
+    public void ResetJump()
+    {
         readyToJump = true;
     }
 
