@@ -1,19 +1,14 @@
-
-
-  /* 
-       1. Find a way to input stats into movment
-   
-   
-    */
+using System;
+using UnityEngine; 
+[RequireComponent(typeof(CameraManager))]
 public class Player : Character
 {
-
-
     void Start()
     {
+        
     
-      double x =  statistics.Get("HI");
-      print(x + "s");
+     
+     
 
     }
 

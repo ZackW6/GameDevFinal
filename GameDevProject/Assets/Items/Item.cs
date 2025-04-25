@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using static Statistics;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Statistics))]
 public abstract class Item : DragDrop
 {
     private bool dropped = false;

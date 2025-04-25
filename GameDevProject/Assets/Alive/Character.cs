@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 [RequireComponent(typeof(Movement))]
-[RequireComponent(typeof(Statistics))]
-[RequireComponent(typeof(Inventory))]
-public abstract class Character : MonoBehaviour
+ [RequireComponent(typeof(Statistics))]
+ [RequireComponent(typeof(Rigidbody2D))]
+  [RequireComponent(typeof(BoxCollider2D))]
+public class Character : MonoBehaviour
 {
     public Statistics stats;
     public Movement movement;
