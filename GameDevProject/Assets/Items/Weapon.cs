@@ -6,7 +6,7 @@ using static Statistics;
 
 public class Weapon : Item
 {
-        public override void Awake(){
+    public override void Awake(){
         base.Awake();
         stats = new Statistics(SetMarkers.Durability, SetMarkers.AttackSpeed, SetMarkers.Damage, SetMarkers.Range, SetMarkers.BonusHealth);
     }

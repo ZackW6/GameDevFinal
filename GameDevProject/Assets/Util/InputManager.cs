@@ -1,18 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class InputManager : MonoBehaviour
+public class InputManager : EventManager
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    public void AddKeyListener(KeyCode key, UnityAction action){
+        AddTopic(key.ToString(), ()=>Input.GetKey(key));
+        AddListener(key.ToString(), action);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void AddKeyDownListener(KeyCode key, UnityAction action){
+        AddTopic(key.ToString()+".Down", ()=>Input.GetKeyDown(key));
+        AddListener(key.ToString()+".Down", action);
+    }
+    public void AddKeyUpListener(KeyCode key, UnityAction action){
+        AddTopic(key.ToString()+".Up", ()=>Input.GetKeyUp(key));
+        AddListener(key.ToString()+".Up", action);
     }
 }

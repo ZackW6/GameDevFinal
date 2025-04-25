@@ -47,6 +47,9 @@ public abstract class Item : DragDrop
             rb.simulated = true;
             col.enabled = true;
         }else{
+            transform.rotation = Quaternion.identity;
+            rb.velocity = new Vector2();
+            rb.angularVelocity = 0;
             rb.simulated = false;
             col.enabled = false;
         }

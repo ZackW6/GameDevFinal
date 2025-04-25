@@ -25,7 +25,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     
     public virtual void OnDrag(PointerEventData eventData)
     {
-        rectTransform.anchoredPosition +=eventData.delta/64.71071f;
+        rectTransform.anchoredPosition += (eventData.delta/(64.71071f))*(Camera.main.orthographicSize/5);
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)

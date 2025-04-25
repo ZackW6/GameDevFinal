@@ -1,25 +1,25 @@
 
 
-//   /* 
-//        1. Find a way to input stats into movment
+  /* 
+       1. Find a way to input stats into movment
    
    
-//     */
-// public class Player : Character
-// {
+    */
+public class Player : Character
+{
 
 
-//     void Start()
-//     {
+    void Start()
+    {
     
-//       double x =  statistics.Get("HI");
-//       print(x + "s");
+      double x =  statistics.Get("HI");
+      print(x + "s");
 
-//     }
+    }
 
-//     // Update is called once per frame
-//     void Update()
-//     {
+    // Update is called once per frame
+    void Update()
+    {
        
-//     }
-// }
+    }
+}
