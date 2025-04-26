@@ -18,9 +18,8 @@ public class Movement : MonoBehaviour
     [SerializeField] private float moveSpeed = 100f;
     [SerializeField] private float groundDrag = 5f;
 
-
     [Header("Inputs")]
-    [SerializeField] private float hori;
+    [SerializeField] private float kHorizontal;
     [SerializeField] private Vector2 moveDirection;
     [SerializeField] private bool kSpace;
 
@@ -30,8 +29,6 @@ public class Movement : MonoBehaviour
     [SerializeField] private float jumpCooldown = .25f;
     [SerializeField] private bool readyToJump;
     [SerializeField] private bool grounded;
-
-
 
     // public Movement(Statistics stats)
     // {
@@ -48,30 +45,28 @@ public class Movement : MonoBehaviour
     void Start()
     {
         readyToJump = true;
-
     }
 
     public void Update()
     {
         grounded = Physics2D.Raycast(transform.position, Vector2.down, cd.size.y, platLayer); // Checks if player is on ground.
-        print("X" + rb.velocity.x);
-        print("Y" + rb.velocity.y);
+        // print("X" + rb.velocity.x);
+        // print("Y" + rb.velocity.y);
         MyInput();
         SpeedControl();
         rb.drag = grounded ? groundDrag : 4f; //Calculates drag based on if entity is in air or not
-
-        // if (hori > 0 || hori < 0) CamMan.Turn();
     }
     public void FixedUpdate()
     {
-        Move();
+        Move(); // Move horizontally
+        if (kHorizontal > 0 || kHorizontal < 0) camMan.TurnCheck(kHorizontal); // Turns
     }
 
     // Gets input from user. Left,Right movement and Jump.
     public void MyInput()
     {
         // Keyboard Inputs
-        hori = Input.GetAxis("Horizontal");
+        kHorizontal = Input.GetAxisRaw("Horizontal");
         kSpace = Input.GetKey(KeyCode.Space);
 
         // Checks if player can jump. Jumps if yes.
@@ -99,7 +94,7 @@ public class Movement : MonoBehaviour
     // Calculates the x velocity of player on ground and air.
     public void Move()
     {
-        moveDirection = Vector2.right * hori; // Uses user input to find what direction player is moving
+        moveDirection = Vector2.right * kHorizontal; // Uses user input to find what direction player is moving
 
         if (grounded) rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode2D.Force); // Speed while grounded
         else if (!grounded) rb.AddForce(moveDirection.normalized * moveSpeed * airMultiplier, ForceMode2D.Force); // Speed while in Air(Maintains the momentum before in air)
