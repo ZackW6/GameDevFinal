@@ -2,28 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
-using static Statistics;
 
 public class Weapon : Item
 {
+    public float durability = 0;
+    public float attackSpeed = 0;
+    public float damage = 0;
+    public float bonusHealth = 0;
     public override void Awake(){
         base.Awake();
-        stats = new Statistics(SetMarkers.Durability, SetMarkers.AttackSpeed, SetMarkers.Damage, SetMarkers.Range, SetMarkers.BonusHealth);
     }
     public float GetDurability(){
-        return stats.Get(SetMarkers.Durability);
+        return durability;
     }
 
     public float GetAttackSpeed(){
-        return stats.Get(SetMarkers.AttackSpeed);
+        return attackSpeed;
     }
 
     public float GetDamage(){
-        return stats.Get(SetMarkers.Range);
+        return damage;
     }
 
     public float GetBonusHealth(){
-        return stats.Get(SetMarkers.BonusHealth);
+        return bonusHealth;
     }
 
     public void Interact(Character enactingCharacter){

@@ -10,6 +10,19 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
     protected DropSlot container = null;
+    protected bool isDragged = false;
+    protected PointerEventData lastData = null;
+
+    void Update(){
+        if (isDragged && lastData != null){
+            print(isDragged);
+            Vector3 mousePos;
+            if (RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, lastData.position, lastData.pressEventCamera, out mousePos))
+            {
+                rectTransform.position = mousePos;
+            }
+        }
+    }
 
     public virtual void Awake()
     {
@@ -18,24 +31,29 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     }
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
+        isDragged = true;
         container = null;
         canvasGroup.alpha = 0.6f;
         canvasGroup.blocksRaycasts = false;
+        transform.SetParent(FindObjectOfType<Canvas>().transform);
     }
     
     public virtual void OnDrag(PointerEventData eventData)
     {
-        rectTransform.anchoredPosition += (eventData.delta/(64.71071f))*(Camera.main.orthographicSize/5);
+        lastData = eventData;
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
     {
+        isDragged = false;
         canvasGroup.alpha = 1;
         canvasGroup.blocksRaycasts = true;
     }
 
     public virtual void SetContainer(DropSlot slot){
         container = slot;
+        transform.SetParent(slot.transform);
+        transform.position = slot.transform.position;
     }
     
     public virtual void OnPointerDown(PointerEventData eventData)

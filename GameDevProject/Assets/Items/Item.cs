@@ -4,14 +4,11 @@ using System.Runtime.ConstrainedExecution;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static Statistics;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
-[RequireComponent(typeof(Statistics))]
 public abstract class Item : DragDrop
 {
     private bool dropped = false;
-    protected Statistics stats;
     public string title;
     private Rigidbody2D rb;
     private Collider2D col;
@@ -67,9 +64,5 @@ public abstract class Item : DragDrop
         rb.simulated = !hide;
         col.enabled = !hide;
         this.enabled = !hide;
-    }
-
-    public Statistics GetStatistics(){
-        return stats;
     }
 }

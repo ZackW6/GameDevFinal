@@ -4,82 +4,46 @@ using UnityEngine;
 // you are able to access the size of the collider. We need to access it because of grounded check depends on how far the entity is away from the ground. Using the
 // collider's y size is the correct size for the raycast. I believe there is a work around but ima work on something else
 
-
+[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class Movement : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] private Statistics playerStats;
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private CameraManager camMan;
     [SerializeField] private BoxCollider2D cd;
     [SerializeField] private LayerMask platLayer;
 
     [Header("Ground Movement")]
-    [SerializeField] private float moveSpeed = 100f;
+    [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float groundDrag = 5f;
 
-    [Header("Inputs")]
-    [SerializeField] private float kHorizontal;
-    [SerializeField] private Vector2 moveDirection;
-    [SerializeField] private bool kSpace;
-
     [Header("Jump")]
-    [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private float jumpForce = 1500;
     [SerializeField] private float airMultiplier = .2f;
-    [SerializeField] private float jumpCooldown = .25f;
-    [SerializeField] private bool readyToJump;
+
+    [SerializeField] private float airDrag = 4f;
     [SerializeField] private bool grounded;
-
-    // public Movement(Statistics stats)
-    // {
-    //     playerStats = stats;
-    // }
-
     public void Awake()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
-        camMan = GetComponent<CameraManager>();
         cd = GetComponent<BoxCollider2D>();
     }
 
-    void Start()
-    {
-        readyToJump = true;
-    }
-
-    public void Update()
+    public void FixedUpdate()
     {
         grounded = Physics2D.Raycast(transform.position, Vector2.down, cd.size.y, platLayer); // Checks if player is on ground.
         // print("X" + rb.velocity.x);
         // print("Y" + rb.velocity.y);
-        MyInput();
         SpeedControl();
-        rb.drag = grounded ? groundDrag : 4f; //Calculates drag based on if entity is in air or not
-    }
-    public void FixedUpdate()
-    {
-        Move(); // Move horizontally
-        if (kHorizontal > 0 || kHorizontal < 0) camMan.TurnCheck(kHorizontal); // Turns
-    }
-
-    // Gets input from user. Left,Right movement and Jump.
-    public void MyInput()
-    {
-        // Keyboard Inputs
-        kHorizontal = Input.GetAxisRaw("Horizontal");
-        kSpace = Input.GetKey(KeyCode.Space);
-
-        // Checks if player can jump. Jumps if yes.
-        if (kSpace && readyToJump && grounded)
-        {
-            readyToJump = false;
-            Jump();
-            Invoke(nameof(ResetJump), jumpCooldown); // Jump Cooldown.
-        }
+        rb.drag = grounded ? groundDrag : airDrag; //Calculates drag based on if entity is in air or not
     }
 
     // Makes sure speed does not exceed limit
-    // 4/25/2025 I don't think this works as intended currently
+    // 4/25/2025 I don't think this works as intended
+
+    //Im not sure exactly what was intended, it doesn't work correctly even with what you wanted,
+    //but the idea is solid to limit how fast some actions can happen seperately from the 
+    //movement function - Zack
     public void SpeedControl()
     {
         Vector2 flatVel = new Vector2(rb.velocity.x, 0f);
@@ -91,26 +55,22 @@ public class Movement : MonoBehaviour
         }
 
     }
-    // Calculates the x velocity of player on ground and air.
-    public void Move()
+
+    //Meant to be called once per frame in the character class which holds it, using whatever data they give
+    public void Move(Vector2 direction)
     {
-        moveDirection = Vector2.right * kHorizontal; // Uses user input to find what direction player is moving
+        if (grounded){
+            direction.Normalize();
+            direction.y *= jumpForce;
+            direction.x *= moveSpeed;
+        }else{
+            direction.y = 0;
+            direction = airMultiplier * moveSpeed * direction.normalized;
+        }
+        rb.AddForce(direction, ForceMode2D.Force);
+        // Vector2 moveDirection = Vector2.right * kHorizontal; // Uses user input to find what direction player is moving
 
-        if (grounded) rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode2D.Force); // Speed while grounded
-        else if (!grounded) rb.AddForce(moveDirection.normalized * moveSpeed * airMultiplier, ForceMode2D.Force); // Speed while in Air(Maintains the momentum before in air)
+        // if (grounded) rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode2D.Force); // Speed while grounded
+        // else if (!grounded) rb.AddForce(moveDirection.normalized * moveSpeed * airMultiplier, ForceMode2D.Force); // Speed while in Air(Maintains the momentum before in air)
     }
-
-    // Calculates entity jump.
-    public void Jump()
-    {
-        rb.velocity = new Vector2(rb.velocity.x, 0f); // Keeps velocity in x speed. Resets velocity in y speed.
-        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-    }
-
-    // Resets jump. Allows entity to jump when true.
-    public void ResetJump()
-    {
-        readyToJump = true;
-    }
-
 }

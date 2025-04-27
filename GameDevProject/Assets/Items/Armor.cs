@@ -2,26 +2,27 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Statistics;
 
 public class Armor : Item
 {
+    public float durability = 0;
+    public float protection = 0;
+    public float bonusHealth = 0;
     public override void Awake()
     {
         base.Awake();
-        stats = new Statistics(SetMarkers.Durability, SetMarkers.Protection, SetMarkers.BonusHealth);
     }
 
     public float GetProtection(){
-        return stats.Get(SetMarkers.Protection);
+        return protection;
     }
 
     public float GetDurability(){
-        return stats.Get(SetMarkers.Durability);
+        return durability;
     }
 
     public float GetBonusHealth(){
-        return stats.Get(SetMarkers.BonusHealth);
+        return bonusHealth;
     }
 
 }

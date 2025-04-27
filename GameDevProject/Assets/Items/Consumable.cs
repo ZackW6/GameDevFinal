@@ -1,14 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Statistics;
 
 public class Consumable : Item
 {
+    public float health = 0;
     public override void Awake()
     {
         base.Awake();
-        stats = new Statistics(SetMarkers.Health);
     }
 
     public void Interact(Character enactingCharacter){

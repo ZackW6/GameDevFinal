@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-
+[RequireComponent(typeof(Movement))]
 public class Pathfinding: MonoBehaviour
 {
     public Tilemap scene;

@@ -22,4 +22,9 @@ public class Enemy : Character
     protected void Destroy(){
         Destroy(this);
     }
+
+    public override void Move(Vector2 vec)
+    {
+        
+    }
 }
