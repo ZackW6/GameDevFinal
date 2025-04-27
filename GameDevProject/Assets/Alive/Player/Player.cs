@@ -27,7 +27,7 @@ public class Player : Character
     // Update is called once per frame
     void Update()
     {
-        kHorizontal = Input.GetAxis("Horizontal");
+        kHorizontal = Input.GetAxisRaw("Horizontal");
         if (kHorizontal > 0 || kHorizontal < 0) camMan.TurnCheck(kHorizontal);
 
         targetVector.x = kHorizontal;

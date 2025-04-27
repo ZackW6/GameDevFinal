@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 // 4/25/2025(rain) Collider2D should in theory be the generic thing. However you cannot reference the collider's size if you use collider2d. If you use BoxCollider2D
@@ -60,7 +61,8 @@ public class Movement : MonoBehaviour
     public void Move(Vector2 direction)
     {
         if (grounded){
-            direction.Normalize();
+            direction.x = Math.Clamp(direction.x, -1,1);
+            direction.y = Math.Clamp(direction.y, -1,1);
             direction.y *= jumpForce;
             direction.x *= moveSpeed;
         }else{
