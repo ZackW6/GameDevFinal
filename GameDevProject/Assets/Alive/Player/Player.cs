@@ -1,6 +1,6 @@
 using System;
 using System.Threading;
-using UnityEngine; 
+using UnityEngine;
 [RequireComponent(typeof(CameraManager))]
 [RequireComponent(typeof(PlayerInventory))]
 public class Player : Character
@@ -12,10 +12,9 @@ public class Player : Character
 
     [Header("Jump Rules")]
     [SerializeField] private float jumpCooldown = .25f;
-    
-    private float lastJumpTime = 0;
+    [SerializeField] private float lastJumpTime = 0;
 
-    private Vector2 targetVector = new Vector2();
+    [SerializeField] private Vector2 targetVector = new Vector2();
 
 
     public override void Awake()
@@ -30,18 +29,16 @@ public class Player : Character
         kHorizontal = Input.GetAxisRaw("Horizontal");
         if (kHorizontal > 0 || kHorizontal < 0) camMan.TurnCheck(kHorizontal);
 
-        targetVector.x = kHorizontal;
+        targetVector = kHorizontal * Vector2.right;
 
-        if (Input.GetKey(KeyCode.Space) && lastJumpTime + jumpCooldown < Time.time){
-            targetVector.y = 1;
+        if (Input.GetKey(KeyCode.Space) && lastJumpTime + jumpCooldown < Time.time)
+        {
+            targetVector = kHorizontal * Vector2.right + Vector2.up;
             lastJumpTime = Time.time;
-        }else{
-            targetVector.y = 0;
         }
-
         Move(targetVector);
     }
-    
+
     public override void Move(Vector2 vec)
     {
         movement.Move(vec);
