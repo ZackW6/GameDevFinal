@@ -5,7 +5,7 @@ using UnityEngine;
 // you are able to access the size of the collider. We need to access it because of grounded check depends on how far the entity is away from the ground. Using the
 // collider's y size is the correct size for the raycast. I believe there is a work around but ima work on something else
 
-[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class Movement : MonoBehaviour
 {
@@ -53,6 +53,10 @@ public class Movement : MonoBehaviour
         // direction.y = Math.Clamp(direction.y, -1, 1);
         if (grounded)
         {
+            if (direction.y > 0){
+              rb.velocity = new Vector2(rb.velocity.x, 0);
+            }
+            
             direction.x *= moveSpeed;
             direction.y *= jumpForce;
         }
@@ -66,5 +70,9 @@ public class Movement : MonoBehaviour
 
         // if (grounded) rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode2D.Force); // Speed while grounded
         // else if (!grounded) rb.AddForce(moveDirection.normalized * moveSpeed * airMultiplier, ForceMode2D.Force); // Speed while in Air(Maintains the momentum before in air)
+    }
+
+    public bool IsGrounded(){
+      return grounded;
     }
 }

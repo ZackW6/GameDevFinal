@@ -9,6 +9,7 @@ public class Weapon : Item
     public float attackSpeed = 0;
     public float damage = 0;
     public float bonusHealth = 0;
+    public Collider2D attackRange;
     public override void Awake(){
         base.Awake();
     }
@@ -30,5 +31,6 @@ public class Weapon : Item
 
     public void Interact(Character enactingCharacter){
         //TODO use the character position and orientation to decide what and how to attack
+        //using attackRange
     }
 }
