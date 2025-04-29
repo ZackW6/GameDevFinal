@@ -28,7 +28,7 @@ public class Movement : MonoBehaviour
     public void Awake()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
-        cd = GetComponent<BoxCollider2D>();
+        cd = gameObject.GetComponent<BoxCollider2D>();
     }
 
     void Update()
