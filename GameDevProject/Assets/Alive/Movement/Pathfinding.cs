@@ -5,16 +5,20 @@ public class Pathfinding: MonoBehaviour
 {
     public Tilemap scene;
     public Vector2[,] WorldView;
+    public Movement movement;
     public void Start()
     {
         setup();
-        print("world view" + WorldView[0,1]);
+        // print("world view" + WorldView[0,1]);
      //   WorldView = new Vector2[scene.size.x][scene.size.y];
         
       //  Debug.Log("Scene" + scene.size.y);
     }
 
     private void setup(){
+        if (!scene){
+            return;
+        }
         WorldView = new Vector2[scene.size.x, scene.size.y];
         for(int x = 0; x < scene.size.x; x++){
             for(int y = 0; y < scene.size.y; y++){
@@ -30,4 +34,16 @@ public class Pathfinding: MonoBehaviour
     // Build a 2d array or air boxes
     // place a vector within each index
     // apply vector to enemy
+
+
+    GameObject player;
+    void Awake()
+    {
+        player = FindObjectOfType<Player>().gameObject;
+        movement = GetComponent<Movement>();
+    }
+    //Poor mans pathfinding
+    void FixedUpdate(){
+        movement.Move(player.transform.position - transform.position);
+    }
 }

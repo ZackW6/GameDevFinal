@@ -9,6 +9,9 @@ public class Inventory : MonoBehaviour
 {
     public List<Item> unequippedItems;
     public List<Item> equippedItems;
+    public List<Weapon> weapons;
+    public List<Armor> armors;
+    public List<Consumable> consumables;
 
     public Inventory(){
         unequippedItems = new List<Item>();
@@ -38,18 +41,40 @@ public class Inventory : MonoBehaviour
         return this.equippedItems.Remove(equipped);
     }
 
+    public virtual void checkEquipped(){
+        weapons.Clear();
+        armors.Clear();
+        consumables.Clear();
+        equippedItems.ForEach((data)=>{
+            if (data is Weapon){
+                weapons.Add((Weapon)data);
+            }
+            if (data is Armor){
+                armors.Add((Armor)data);
+            }
+            if (data is Consumable){
+                consumables.Add((Consumable)data);
+            }
+        });
+    }
+
     public void Kill(){
         PlayerInventory p = FindObjectOfType<PlayerInventory>();
         unequippedItems.ForEach((data)=>{
             data.transform.position = transform.position;
             data.Hide(false);
             p.addDropped(data);
+            data.transform.SetParent(FindObjectOfType<Canvas>().transform);
         });
         equippedItems.ForEach((data)=>{
             data.transform.position = transform.position;
             data.Hide(false);
             p.addDropped(data);
+            data.transform.SetParent(FindObjectOfType<Canvas>().transform);
         });
+        weapons.Clear();
+        armors.Clear();
+        consumables.Clear();
         unequippedItems.Clear();
         equippedItems.Clear();
     }

@@ -9,7 +9,7 @@ public class Weapon : Item
     public float attackSpeed = 0;
     public float damage = 0;
     public float bonusHealth = 0;
-    public Collider2D attackRange;
+    public AttackRange attackRange;
     public override void Awake(){
         base.Awake();
     }

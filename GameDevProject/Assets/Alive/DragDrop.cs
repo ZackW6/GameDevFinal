@@ -15,7 +15,6 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
 
     void Update(){
         if (isDragged && lastData != null){
-            print(isDragged);
             Vector3 mousePos;
             if (RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, lastData.position, lastData.pressEventCamera, out mousePos))
             {

@@ -34,7 +34,7 @@ public class Movement : MonoBehaviour
     void Update()
     {
         grounded = Physics2D.Raycast(transform.position, Vector2.down, cd.size.y, platLayer); // Checks if player is on ground.
-        rb.drag = grounded ? groundDrag : airDrag; //Calculates drag based on if entity is in air or not    
+        rb.drag = 5;//grounded ? groundDrag : airDrag; //Calculates drag based on if entity is in air or not    
         SpeedControl();
 
         currentSpeed = rb.velocity.x; // Test code so you can view in inspector
@@ -49,8 +49,8 @@ public class Movement : MonoBehaviour
     //Meant to be called once per frame in the character class which holds it, using whatever data they give
     public void Move(Vector2 direction)
     {
-        // direction.x = Math.Clamp(direction.x, -1, 1);
-        // direction.y = Math.Clamp(direction.y, -1, 1);
+        direction.x = (direction.x < .05f && direction.x > -.05f) ? 0 : direction.x > 0 ? 1 : -1;
+        direction.y = (direction.y < .05f && direction.y > -.05f) ? 0 : direction.y > 0 ? 1 : -1;
         if (grounded)
         {
             if (direction.y > 0){
@@ -65,6 +65,7 @@ public class Movement : MonoBehaviour
             direction.y = 0;
             direction = airMultiplier * moveSpeed * direction;
         }
+        print(direction.x);
         rb.AddForce(direction, ForceMode2D.Force);
         // Vector2 moveDirection = Vector2.right * kHorizontal; // Uses user input to find what direction player is moving
 

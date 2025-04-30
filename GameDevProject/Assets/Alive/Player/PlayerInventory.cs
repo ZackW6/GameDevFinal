@@ -23,9 +23,8 @@ public class PlayerInventory : Inventory
         return this.dropped.Remove(dropped);
     }
 
-    public void checkEquipped(){
+    public override void checkEquipped(){
         slots.ForEach((data)=>{
-            print(data);
             if (data.droppedItem && data.droppedItem is Item){
                 if (data.item == PlayerSlot.extra){
                     addUnequipped((Item)data.droppedItem);
@@ -36,5 +35,6 @@ public class PlayerInventory : Inventory
                 }
             }
         });
+        base.checkEquipped();
     }
 }

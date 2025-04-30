@@ -17,28 +17,32 @@ public abstract class Character : MonoBehaviour
     [SerializeField] private float attackSpeed = 1;
     [SerializeField] private float damage = 3;
 
-    public Collider2D defaultAttackRange;
+    public AttackRange defaultAttackRange;
+    private Weapon lastUsed;
 
     public bool isAbleToAttack = true;
     public virtual void Awake()
     {
         this.movement = GetComponent<Movement>();
         this.inventory = GetComponent<Inventory>();
-        defaultAttackRange.enabled = false;
     }
 
     public void ResetAttack(){
         isAbleToAttack = true;
     }
 
-    public virtual void Attack(float amount){
+    public virtual void Attack(){
+        foreach (Weapon i in inventory.weapons){
+            if (i != lastUsed && i.attackRange){
+                Attack(i.attackSpeed, i.damage, i.attackRange);
+                lastUsed = i;
+                return;
+            }
+        }
         //Run attack animation
-        if (defaultAttackRange && isAbleToAttack){
-            isAbleToAttack = false;
-            Invoke("ResetAttack", attackSpeed);
-
-            defaultAttackRange.enabled = true;
-            // defaultAttackRange.IsTouching()
+        if (defaultAttackRange){
+            lastUsed = null;
+            Attack(attackSpeed, damage, defaultAttackRange);
         }
         // foreach (Item i in inventory.equippedItems){
         //     if (i is Weapon){
@@ -46,17 +50,33 @@ public abstract class Character : MonoBehaviour
         //     }
         // }
     }
+    
+    public void Attack(float attackSpeed, float damage, AttackRange attackRange){
+        if (isAbleToAttack){
+            isAbleToAttack = false;
+            Invoke(nameof(ResetAttack), attackSpeed);
+            attackRange.transform.SetPositionAndRotation(transform.position, transform.rotation);
+            foreach (GameObject i in attackRange.CheckCollider()){
+                if (i.CompareTag("Enemy"))
+                {
+                    i.GetComponent<Enemy>().Damage(damage);
+                }
+            }
+        }
+    }
 
     public virtual void Damage(float amount){
         //Run hurt animation
         health -= amount;
         if (health <= 0){
-            Kill();
+            Invoke(nameof(Kill), .1f);
         }
     }
 
     public virtual void Kill(){
+
         //Killed animation here
         inventory.Kill();
+        Destroy(gameObject);
     }
 }

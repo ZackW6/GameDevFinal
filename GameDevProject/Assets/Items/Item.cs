@@ -61,8 +61,8 @@ public abstract class Item : DragDrop
     }
 
     public void Hide(bool hide){
+        this.enabled = !hide;
         rb.simulated = !hide;
         col.enabled = !hide;
-        this.enabled = !hide;
     }
 }

@@ -13,25 +13,14 @@ public class Enemy : Character
         }
         foreach (Item i in inventory.unequippedItems){
             i.Hide(true);
+            i.transform.SetParent(FindObjectOfType<Canvas>().transform);
         }
+        pathfinder = GetComponent<Pathfinding>();
     }
 
     void FixedUpdate()
     {
         //TODO this will eventually be the case, waiting on other classes
         // movement.Move(pathfinder.getMove());
-        pathfinder = GetComponent<Pathfinding>();
-    }
-
-    public override void Kill()
-    {
-        base.Kill();
-        //Run some kill animation
-        //Then delete
-        Invoke("Destroy",1);
-    }
-
-    protected void Destroy(){
-        Destroy(this);
     }
 }

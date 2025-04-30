@@ -39,5 +39,10 @@ public class Player : Character
             lastJumpTime = Time.time;
         }
         movement.Move(targetVector);
+
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            Attack();
+        }
     }
 }
