@@ -2,10 +2,15 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    [SerializeField] private bool IsFacingRight;
+    public bool IsFacingRight;
 
-    void Start()
+    private CameraFollow camFol;
+
+    [SerializeField] private GameObject camFolObj;
+
+    private void Start()
     {
+        camFol = camFolObj.GetComponent<CameraFollow>();
         IsFacingRight = transform.rotation == Quaternion.Euler(new Vector3(transform.rotation.x, 0f, transform.rotation.z)) ? true : false; // Checks what direction the entity is facing
     }
 
@@ -16,17 +21,14 @@ public class CameraManager : MonoBehaviour
     }
 
     // Turn functionality
-    public void Turn()
+    private void Turn()
     {
         Vector3 rotator = IsFacingRight ? new Vector3(transform.rotation.x, 180f, transform.rotation.z) /* Facing right turns left */ : new Vector3(transform.rotation.x, 0f, transform.rotation.z) /* Facing left turns right */; 
 
         transform.rotation = Quaternion.Euler(rotator); // This does the turning
         IsFacingRight = !IsFacingRight;
+
+        camFol.CallTurn();
     }
 
-    // INTERPOLATE METHOD
-
-    // CAMERA BOUNDS
-
-    // SOMETHING I THINK OF
 }
