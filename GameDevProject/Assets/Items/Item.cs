@@ -13,6 +13,10 @@ public abstract class Item : DragDrop
     private Rigidbody2D rb;
     private Collider2D col;
     private PlayerInventory playerInventory;
+
+    public float durability = 0;
+    public float bonusHealth = 0;
+    public float protection = 0;
     public override void Awake()
     {
         base.Awake();
@@ -64,5 +68,15 @@ public abstract class Item : DragDrop
         this.enabled = !hide;
         rb.simulated = !hide;
         col.enabled = !hide;
+    }
+
+    public float GetDurability(){
+        return durability;
+    }
+    public float GetBonusHealth(){
+        return bonusHealth;
+    }
+        public float GetProtection(){
+        return protection;
     }
 }

@@ -11,11 +11,14 @@ public abstract class Character : MonoBehaviour
     public Inventory inventory;
 
     [Header("Stats")]
-    [SerializeField] private float health = 100;
-    [SerializeField] private float bonusHealth = 0;
+    [SerializeField] private float maxHealth = 100;
+    [SerializeField] private float health = 0;
     [SerializeField] private float protection = 0;
     [SerializeField] private float attackSpeed = 1;
     [SerializeField] private float damage = 3;
+    [SerializeField] private float healRate = 1;
+
+    private float addedMaxHealth;
 
     public AttackRange defaultAttackRange;
     private Weapon lastUsed;
@@ -23,8 +26,25 @@ public abstract class Character : MonoBehaviour
     public bool isAbleToAttack = true;
     public virtual void Awake()
     {
+        addedMaxHealth = maxHealth;
         this.movement = GetComponent<Movement>();
         this.inventory = GetComponent<Inventory>();
+
+        inventory.checkEquipped();
+        PreformStatCheck();
+    }
+
+    public virtual void Update()
+    {
+        if (health + Time.deltaTime * healRate > addedMaxHealth){
+            health = addedMaxHealth;
+        }
+        health+=Time.deltaTime * healRate;
+    }
+
+    public virtual void PreformStatCheck(){
+        addedMaxHealth = maxHealth + inventory.GetAddedHealth();
+        protection = inventory.GetAddedProtection();
     }
 
     public void ResetAttack(){

@@ -7,15 +7,18 @@ public class PlayerSlot : DropSlot
     public int type;
     
     public Func<Item, bool> item;
+
+    private Player player;
     public override void Awake()
     {
+        player = FindObjectOfType<Player>();
         base.Awake();
         switch(type){
             case 0:
                 item = weapon;
             break;
             case 1:
-                item = armor;
+                item = head;
             break;
             case 2:
                 item = consumable;
@@ -23,6 +26,12 @@ public class PlayerSlot : DropSlot
             case 3:
                 item = extra;
             break;
+            case 4:
+                item = chest;
+                break;
+            case 5:
+                item = legs;
+                break;
             default:
                 item = extra;
             break;
@@ -33,7 +42,9 @@ public class PlayerSlot : DropSlot
         }
     }
     public static readonly Func<Item, bool> weapon = (data) => data is Weapon;
-    public static readonly Func<Item, bool> armor = (data) => data is Armor;
+    public static readonly Func<Item, bool> head = (data) => data is Head;
+    public static readonly Func<Item, bool> chest = (data) => data is Chest;
+    public static readonly Func<Item, bool> legs = (data) => data is Legs;
     public static readonly Func<Item, bool> consumable = (data) => data is Consumable;
     public static readonly Func<Item, bool> extra = (data) => data is Item;
 
@@ -46,5 +57,6 @@ public class PlayerSlot : DropSlot
                 droppedItem = eventData.pointerDrag.GetComponent<DragDrop>();
             }
         }
+        player.PreformStatCheck();
     }
 }
