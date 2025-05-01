@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 [RequireComponent(typeof(Movement))]
@@ -44,6 +45,11 @@ public class Pathfinding: MonoBehaviour
     }
     //Poor mans pathfinding
     void FixedUpdate(){
-        movement.Move(player.transform.position - transform.position);
+        Vector2 vec = player.transform.position - transform.position;
+        if (vec.magnitude > 10){
+            return;
+        }
+        vec.y = vec.y > 3 ? 1 : 0;
+        movement.Move(vec);
     }
 }

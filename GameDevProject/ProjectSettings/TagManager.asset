@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Cave
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -56,4 +57,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 2324605229
+    locked: 0
+  - name: UI
+    uniqueID: 3359038447
     locked: 0

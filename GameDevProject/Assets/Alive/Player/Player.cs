@@ -42,7 +42,16 @@ public class Player : Character
 
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            Attack();
+            Attack("Enemy");
         }
+    }
+
+    public override void Kill()
+    {
+        GetComponent<SpriteRenderer>().enabled = false;
+        this.enabled = false;
+        GetComponent<Rigidbody2D>().simulated = false;
+        GetComponent<Collider2D>().enabled = false;
+        inventory.Kill();
     }
 }

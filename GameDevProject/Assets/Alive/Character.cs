@@ -31,10 +31,10 @@ public abstract class Character : MonoBehaviour
         isAbleToAttack = true;
     }
 
-    public virtual void Attack(){
+    public virtual void Attack(string tag){
         foreach (Weapon i in inventory.weapons){
             if (i != lastUsed && i.attackRange){
-                Attack(i.attackSpeed, i.damage, i.attackRange);
+                Attack(i.attackSpeed, i.damage, i.attackRange, tag);
                 lastUsed = i;
                 return;
             }
@@ -42,7 +42,7 @@ public abstract class Character : MonoBehaviour
         //Run attack animation
         if (defaultAttackRange){
             lastUsed = null;
-            Attack(attackSpeed, damage, defaultAttackRange);
+            Attack(attackSpeed, damage, defaultAttackRange, tag);
         }
         // foreach (Item i in inventory.equippedItems){
         //     if (i is Weapon){
@@ -51,15 +51,15 @@ public abstract class Character : MonoBehaviour
         // }
     }
     
-    public void Attack(float attackSpeed, float damage, AttackRange attackRange){
+    public void Attack(float attackSpeed, float damage, AttackRange attackRange, string tag){
         if (isAbleToAttack){
             isAbleToAttack = false;
             Invoke(nameof(ResetAttack), attackSpeed);
             attackRange.transform.SetPositionAndRotation(transform.position, transform.rotation);
             foreach (GameObject i in attackRange.CheckCollider()){
-                if (i.CompareTag("Enemy"))
+                if (i.CompareTag(tag))
                 {
-                    i.GetComponent<Enemy>().Damage(damage);
+                    i.GetComponent<Character>().Damage(damage);
                 }
             }
         }

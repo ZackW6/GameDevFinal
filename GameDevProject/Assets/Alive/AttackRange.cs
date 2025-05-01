@@ -16,13 +16,11 @@ public class AttackRange : MonoBehaviour
         return collidings;
     }
 
-    void OnTriggerEnter2D(Collider2D  col) {
+    void OnTriggerEnter2D(Collider2D col) {
 		collidings.Add (col.gameObject);
 	}
 
-	void OnTriggerExit2D(Collider2D  col) {
-		collidings.Remove (col.gameObject);
+    void OnTriggerExit2D(Collider2D col) {
+		collidings.Remove(col.gameObject);
 	}
-
-    
 }

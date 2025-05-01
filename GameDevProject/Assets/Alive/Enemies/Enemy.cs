@@ -5,6 +5,8 @@ public class Enemy : Character
 {
     Pathfinding pathfinder;
 
+    private Player player;
+
     public override void Awake()
     {
         base.Awake();
@@ -13,13 +15,22 @@ public class Enemy : Character
         }
         foreach (Item i in inventory.unequippedItems){
             i.Hide(true);
-            i.transform.SetParent(FindObjectOfType<Canvas>().transform);
         }
         pathfinder = GetComponent<Pathfinding>();
+        player = FindObjectOfType<Player>();
     }
 
     void FixedUpdate()
     {
+        Vector2 vec = player.transform.position - transform.position;
+        if (vec.magnitude < 5){
+            Attack("Player");
+        }
+        if (vec.x > 0){
+            transform.rotation = Quaternion.Euler(new Vector3(0,0,0));
+        }else{
+            transform.rotation = Quaternion.Euler(new Vector3(0,0,180));
+        }
         //TODO this will eventually be the case, waiting on other classes
         // movement.Move(pathfinder.getMove());
     }

@@ -58,14 +58,15 @@ public class Movement : MonoBehaviour
             }
             
             direction.x *= moveSpeed;
-            direction.y *= jumpForce;
+            if (direction.y > 0){
+                direction.y *= jumpForce;
+            }
         }
         else
         {
             direction.y = 0;
             direction = airMultiplier * moveSpeed * direction;
         }
-        print(direction.x);
         rb.AddForce(direction, ForceMode2D.Force);
         // Vector2 moveDirection = Vector2.right * kHorizontal; // Uses user input to find what direction player is moving
 
