@@ -4,13 +4,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
 public class Inventory : MonoBehaviour
 {
     public List<Item> unequippedItems;
     public List<Item> equippedItems;
     public List<Weapon> weapons;
-    public List<Armor> armors;
+    public MultiType<Head, Chest, Legs> armors;
     public List<Consumable> consumables;
 
     public Inventory(){
@@ -43,14 +42,20 @@ public class Inventory : MonoBehaviour
 
     public virtual void checkEquipped(){
         weapons.Clear();
-        armors.Clear();
+        armors = new MultiType<Head, Chest, Legs>(null, null, null);
         consumables.Clear();
         equippedItems.ForEach((data)=>{
             if (data is Weapon){
                 weapons.Add((Weapon)data);
             }
-            if (data is Armor){
-                armors.Add((Armor)data);
+            if (data is Head){
+                armors.a = (Head)data;
+            }
+            if (data is Chest){
+                armors.b = (Chest)data;
+            }
+            if (data is Legs){
+                armors.c = (Legs)data;
             }
             if (data is Consumable){
                 consumables.Add((Consumable)data);
@@ -73,9 +78,25 @@ public class Inventory : MonoBehaviour
             data.transform.SetParent(FindObjectOfType<Canvas>().transform);
         });
         weapons.Clear();
-        armors.Clear();
+        armors = new MultiType<Head, Chest, Legs>(null, null, null);
         consumables.Clear();
         unequippedItems.Clear();
         equippedItems.Clear();
+    }
+
+    public float GetAddedHealth(){
+        float addedFromWeapons = 0;
+        foreach (Weapon w in weapons){
+            addedFromWeapons += w.bonusHealth;
+        }
+        return (armors.a ? armors.a.bonusHealth : 0) + (armors.b ? armors.b.bonusHealth : 0)  + (armors.c ? armors.c.bonusHealth : 0)  + addedFromWeapons;
+    }
+
+    public float GetAddedProtection(){
+        float addedFromWeapons = 0;
+        foreach (Weapon w in weapons){
+            addedFromWeapons += w.bonusHealth;
+        }
+        return (armors.a ? armors.a.protection : 0) + (armors.b ? armors.b.protection : 0)  + (armors.c ? armors.c.protection : 0)  + addedFromWeapons;
     }
 }

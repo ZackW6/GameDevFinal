@@ -16,13 +16,10 @@ public class Player : Character
 
     [SerializeField] private Vector2 targetVector = new Vector2();
 
-    public PlayerInventory playerInventory;
-
     public override void Awake()
     {
         base.Awake();
         camMan = GetComponent<CameraManager>();
-        playerInventory = GetComponent<PlayerInventory>();
     }
 
     // Update is called once per frame

@@ -26,11 +26,7 @@ public class Enemy : Character
         if (vec.magnitude < 5){
             Attack("Player");
         }
-        if (vec.x > 0){
-            transform.rotation = Quaternion.Euler(new Vector3(0,0,0));
-        }else{
-            transform.rotation = Quaternion.Euler(new Vector3(0,0,180));
-        }
+        transform.rotation = vec.x > 0 ? Quaternion.Euler(new Vector3(0,0,0)) : Quaternion.Euler(new Vector3(0,0,180));
         //TODO this will eventually be the case, waiting on other classes
         // movement.Move(pathfinder.getMove());
     }
