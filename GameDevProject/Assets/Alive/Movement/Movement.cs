@@ -57,7 +57,7 @@ public class Movement : MonoBehaviour
               rb.velocity = new Vector2(rb.velocity.x, 0);
             }
             
-            direction.x *= moveSpeed;
+            direction.x *= moveSpeed * 10f;
             if (direction.y > 0){
                 direction.y *= jumpForce;
             }
@@ -65,7 +65,7 @@ public class Movement : MonoBehaviour
         else
         {
             direction.y = 0;
-            direction = airMultiplier * moveSpeed * direction;
+            direction = airMultiplier * moveSpeed * 10f * direction;
         }
         rb.AddForce(direction, ForceMode2D.Force);
         // Vector2 moveDirection = Vector2.right * kHorizontal; // Uses user input to find what direction player is moving
