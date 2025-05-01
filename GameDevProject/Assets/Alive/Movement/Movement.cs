@@ -25,23 +25,25 @@ public class Movement : MonoBehaviour
     [SerializeField] private float airDrag = 4f;
     [SerializeField] private bool grounded;
     [SerializeField] private float currentSpeed;
-    public void Awake()
+    private void Awake()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
-        cd = GetComponent<BoxCollider2D>();
+        cd = gameObject.GetComponent<BoxCollider2D>();
+        rb.drag = 5;//grounded ? groundDrag : airDrag; //Calculates drag based on if entity is in air or not  
     }
 
-    void Update()
+    private void Update()
     {
-        grounded = Physics2D.Raycast(transform.position, Vector2.down, cd.size.y, platLayer); // Checks if player is on ground.
-        rb.drag = 5;//grounded ? groundDrag : airDrag; //Calculates drag based on if entity is in air or not    
         SpeedControl();
 
         currentSpeed = rb.velocity.x; // Test code so you can view in inspector
     }
-
+    void FixedUpdate()
+    {
+        grounded = Physics2D.Raycast(transform.position, Vector2.down, cd.size.y + cd.offset.y, platLayer); // Checks if player is on ground.
+    }
     // Movement speed control
-    public void SpeedControl()
+    private void SpeedControl()
     {
         rb.velocity = new Vector2(Math.Clamp(rb.velocity.x, -moveSpeed, moveSpeed), rb.velocity.y);
     }
@@ -53,19 +55,21 @@ public class Movement : MonoBehaviour
         direction.y = (direction.y < .05f && direction.y > -.05f) ? 0 : direction.y > 0 ? 1 : -1;
         if (grounded)
         {
-            if (direction.y > 0){
-              rb.velocity = new Vector2(rb.velocity.x, 0);
+            if (direction.y > 0)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, 0);
             }
-            
-            direction.x *= moveSpeed;
-            if (direction.y > 0){
+
+            direction.x *= moveSpeed * 10f;
+            if (direction.y > 0)
+            {
                 direction.y *= jumpForce;
             }
         }
         else
         {
             direction.y = 0;
-            direction = airMultiplier * moveSpeed * direction;
+            direction = airMultiplier * moveSpeed * 10f * direction;
         }
         rb.AddForce(direction, ForceMode2D.Force);
         // Vector2 moveDirection = Vector2.right * kHorizontal; // Uses user input to find what direction player is moving
@@ -74,7 +78,8 @@ public class Movement : MonoBehaviour
         // else if (!grounded) rb.AddForce(moveDirection.normalized * moveSpeed * airMultiplier, ForceMode2D.Force); // Speed while in Air(Maintains the momentum before in air)
     }
 
-    public bool IsGrounded(){
-      return grounded;
+    public bool IsGrounded()
+    {
+        return grounded;
     }
 }
