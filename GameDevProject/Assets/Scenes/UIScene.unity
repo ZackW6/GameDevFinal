@@ -647,9 +647,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: HI
   durability: 0
+  bonusHealth: 0
+  protection: 0
   attackSpeed: 2
   damage: 10
-  bonusHealth: 0
   attackRange: {fileID: 1665942852}
 --- !u!114 &1105153398
 MonoBehaviour:
@@ -948,6 +949,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsFacingRight: 0
+  camFolObj: {fileID: 0}
 --- !u!61 &1862636159
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1037,13 +1039,14 @@ MonoBehaviour:
   platLayer:
     serializedVersion: 2
     m_Bits: 64
-  moveSpeed: 70
+  moveSpeed: 10
   groundDrag: 10
   jumpForce: 1500
   airMultiplier: 0.7
   airDrag: 4
   grounded: 0
   currentSpeed: 0
+  defaultGrav: 0
 --- !u!4 &1862636162
 Transform:
   m_ObjectHideFlags: 0
@@ -1073,11 +1076,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movement: {fileID: 0}
   inventory: {fileID: 0}
+  maxHealth: 100
   health: 100
-  bonusHealth: 0
   protection: 0
   attackSpeed: 0.2
   damage: 3
+  healRate: 1
   defaultAttackRange: {fileID: 1627970115}
   isAbleToAttack: 1
   camMan: {fileID: 0}
@@ -1085,7 +1089,6 @@ MonoBehaviour:
   jumpCooldown: 0.25
   lastJumpTime: 0
   targetVector: {x: 0, y: 0}
-  playerInventory: {fileID: 0}
 --- !u!114 &1862636164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1101,7 +1104,6 @@ MonoBehaviour:
   unequippedItems: []
   equippedItems: []
   weapons: []
-  armors: []
   consumables: []
   dropped:
   - {fileID: 1105153397}
@@ -1308,6 +1310,10 @@ PrefabInstance:
       propertyPath: defaultAttackRange
       value: 
       objectReference: {fileID: 1627970115}
+    - target: {fileID: 8250999102828233049, guid: ba0f3d7def180cf489f59a212f242850, type: 3}
+      propertyPath: moveSpeed
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
