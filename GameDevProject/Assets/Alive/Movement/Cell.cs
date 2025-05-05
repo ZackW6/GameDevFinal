@@ -19,7 +19,7 @@ public class Cell : MonoBehaviour
         Xindex = i;
         Yindex = j;
     }
-    public void setCost(int preCost)
+    public void setCost(double preCost)
     {
         this.cost = preCost + 1;
     }
@@ -27,6 +27,11 @@ public class Cell : MonoBehaviour
     public bool visited(){
         return isVisited;
     }
+
+    public void setVisited(bool v){
+        isVisited = v;
+    }
+    
 
     public double getCost(){
        return cost; 
