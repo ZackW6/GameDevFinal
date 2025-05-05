@@ -25,16 +25,23 @@ public class Movement : MonoBehaviour
     [SerializeField] private float airDrag = 4f;
     [SerializeField] private bool grounded;
     [SerializeField] private float currentSpeed;
+    [SerializeField] private float defaultGrav;
     private void Awake()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         cd = gameObject.GetComponent<BoxCollider2D>();
-        rb.drag = 5;//grounded ? groundDrag : airDrag; //Calculates drag based on if entity is in air or not  
+        rb.drag = 5;//grounded ? groundDrag : airDrag; //Calculates drag based on if entity is in air or not
+        defaultGrav = rb.gravityScale;
     }
 
     private void Update()
     {
         SpeedControl();
+        if(rb.velocity.y < 0){
+            rb.gravityScale = defaultGrav * 1.5f;
+        }else{
+            rb.gravityScale = defaultGrav;
+        }
 
         currentSpeed = rb.velocity.x; // Test code so you can view in inspector
     }

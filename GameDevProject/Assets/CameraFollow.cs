@@ -9,7 +9,7 @@ public class CameraFollow : MonoBehaviour
 
     [SerializeField] private float flipYRotationTime = .5f;
 
-    private Coroutine turnCorutine;
+    // private Coroutine turnCorutine;
     private CameraManager camMan;
     private bool isFacingRight;
 
@@ -31,24 +31,24 @@ public class CameraFollow : MonoBehaviour
         LeanTween.rotateY(gameObject, DetermineEndRotation(), flipYRotationTime).setEaseInOutSine();
     }
 
-    private IEnumerator FlipYLerp()
-    {
-        float startRotation = transform.localEulerAngles.y;
-        float endRotationAmount = DetermineEndRotation();
-        float yRotation = 0f;
+    // private IEnumerator FlipYLerp()
+    // {
+    //     float startRotation = transform.localEulerAngles.y;
+    //     float endRotationAmount = DetermineEndRotation();
+    //     float yRotation = 0f;
 
-        float elapsedTime = 0f;
+    //     float elapsedTime = 0f;
 
-        while (elapsedTime < flipYRotationTime)
-        {
-            elapsedTime += Time.deltaTime;
+    //     while (elapsedTime < flipYRotationTime)
+    //     {
+    //         elapsedTime += Time.deltaTime;
 
-            yRotation = Mathf.Lerp(startRotation, endRotationAmount, (elapsedTime / flipYRotationTime));
-            transform.rotation = UnityEngine.Quaternion.Euler(0f, yRotation, 0f);
-        }
+    //         yRotation = Mathf.Lerp(startRotation, endRotationAmount, (elapsedTime / flipYRotationTime));
+    //         transform.rotation = UnityEngine.Quaternion.Euler(0f, yRotation, 0f);
+    //     }
 
-        yield return null;
-    }
+    //     yield return null;
+    // }
 
     private float DetermineEndRotation()
     {
