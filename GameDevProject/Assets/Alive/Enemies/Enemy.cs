@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Pathfinding))]
+[RequireComponent(typeof(PathFinding2))]
 public class Enemy : Character
 {
     Pathfinding pathfinder;
@@ -26,7 +26,7 @@ public class Enemy : Character
         if (vec.magnitude < 5){
             Attack("Player");
         }
-        transform.rotation = vec.x > 0 ? Quaternion.Euler(new Vector3(0,0,0)) : Quaternion.Euler(new Vector3(0,0,180));
+        transform.rotation = vec.x > 0 ? Quaternion.Euler(new Vector3(0,0,0)) : Quaternion.Euler(new Vector3(0,180,0));
         //TODO this will eventually be the case, waiting on other classes
         // movement.Move(pathfinder.getMove());
     }

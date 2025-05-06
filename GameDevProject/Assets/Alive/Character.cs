@@ -38,6 +38,7 @@ public abstract class Character : MonoBehaviour
     {
         if (health + Time.deltaTime * healRate > addedMaxHealth){
             health = addedMaxHealth;
+            return;
         }
         health+=Time.deltaTime * healRate;
     }

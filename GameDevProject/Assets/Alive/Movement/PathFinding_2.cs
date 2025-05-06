@@ -2,114 +2,171 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using Unity.Collections;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 
-
 public class PathFinding2 : MonoBehaviour
 {
-    // Start is called before the first frame update
-
-
     public Tilemap Scene;
     public Cell[,] World;
-    public GameObject targetObject;
+    public Player player;
+    public GameObject prefab;
     private int xPos = -33;
     private int yPos = 21;
-    int scaleXlen = 10;
-    int scaleYlen = 10;
     void Start()
     {
+        
         World = new Cell[Scene.size.x, Scene.size.y];
+
         for (int x = xPos; x < World.GetLength(0) + xPos; x++)
         {
             for (int y = yPos; y > -World.GetLength(1) + yPos; y--)
             {
                 Vector3Int pos = new Vector3Int(x, y, 0);
                 TileBase tile = Scene.GetTile(pos);
+                
                 World[x - xPos, -(y) + yPos] = new Cell(x - xPos, -(y) + yPos);
+                if (tile){
+                    World[x - xPos, -(y) + yPos].defaultCost = 255;
+                }
+                World[x - xPos, -(y) + yPos].InstantiateArrow(prefab, new Vector2(x,y), Quaternion.identity);
             }
         }
-        int playerPosX = (int)Mathf.Floor(targetObject.transform.position.x);
-        int playerPosY = (int)Mathf.Ceil(targetObject.transform.position.y);
-
-        Coordinate(playerPosX, playerPosY, 0);
+        player = FindObjectOfType<Player>();
+        AlotNeighbors();
+        // thread = new Thread(PathingUpdate);
+        // thread.Start();
     }
-    List<int[]> cellsToVisit = new List<int[]>();
-    public void Coordinate(int x, int y, int depth)
-    {
-        if (depth == 0)
-        {
-            int[] arr = new int[2];
-            arr[0] = x;
-            arr[1] = y;
-            cellsToVisit.Add(arr);
-            World[x, y].setVisited(true);
-            World[x, y].setCost(0);
-            Coordinate(cellsToVisit[0][0], cellsToVisit[0][1], depth + 1);
-        }
-        else if (cellsToVisit.Count > 0)
-        {
-            print("Loading: " + depth);
-            updateCosts(x, y);
-            Coordinate(cellsToVisit[0][0], cellsToVisit[0][1], depth + 1);
-        }
-        print("Finished: " + depth);
-    }
+    // private void OnDestroy()  
+    // {  
+    //     thread.Abort();
+    // }
+    // private void OnApplicationQuit()  
+    // {
+    //     thread.Abort();
+    // }
+    // void Update(){
+    //     playerX = player.transform.position.x;
+    //     playerY = player.transform.position.y;
+    // }
+    private void Update(){
+        int playerPosX = (int)Mathf.Floor(player.transform.position.x);
+        int playerPosY = (int)Mathf.Ceil(player.transform.position.y);
 
-    public void updateCosts(int x, int y)
-    {
-        List<int[]> neigbors = findNeightbors(x, y);
-        for (var i = 0; i < neigbors.Count; i++)
-        {
-            cellsToVisit.Add(neigbors[i]);
-            World[neigbors[i][0], neigbors[i][1]].setCost(World[x, y].getCost());
-            World[neigbors[i][0], neigbors[i][1]].setVisited(true);
-        }
-        cellsToVisit.RemoveAt(0);
-    }
+        int enemyX = (int)Mathf.Floor(transform.position.x);
+        int enemyY = (int)Mathf.Ceil(transform.position.y);
 
-    public List<int[]> findNeightbors(int x, int y)
-    {
-        List<int[]> neighbors = new List<int[]>();
-        for (int i = -1; i < 2; i++)
+        Cell start = null;
+        for (int x = xPos; x < World.GetLength(0) + xPos; x++)
         {
-            for (int j = -1; j < 2; j++)
+            for (int y = yPos; y > -World.GetLength(1) + yPos; y--)
             {
-                if (i + j != 0)
-                {
-                    if (x + i >= 0 && x + i < World.GetLength(0))
-                    {
-                        if (y + j >= 0 && y + j < World.GetLength(1))
-                        {
-                            if (x + i >= targetObject.transform.position.x - scaleXlen && x + i < targetObject.transform.position.x + scaleXlen)
-                            {
-                                if (y + j >= targetObject.transform.position.y - scaleXlen && y + j < targetObject.transform.position.y + scaleYlen)
-                                {
-                                    // print(x+i + " "+ y+j);
-                                    if (!World[x + i, y + j].visited())
-                                    {
-                                        int[] arr = new int[2];
-                                        arr[0] = x + i;
-                                        arr[1] = y + j;
-                                        neighbors.Add(arr);
-
-                                    }
-                                }
-                            }
-                        }
-                    }
+                Cell c = World[x - xPos, -(y) + yPos];
+                if (c.x == (enemyX-xPos) && c.y == (-enemyY+yPos)){
+                    transform.position = new Vector2(transform.position.x + c.direction.x*Time.deltaTime*5, transform.position.y + c.direction.y*Time.deltaTime*5);
+                }
+                c.cost = 0;
+                c.parent = null;
+                if (c.x == (playerPosX-xPos) && c.y == (-playerPosY+yPos)){
+                    start = c;
                 }
             }
         }
-        return neighbors;
+
+        if (start == null || start.adjacentCells == null){
+            return;
+        }
+        List<Cell> nextCells = new List<Cell>();
+        for (int i = 0; i < start.adjacentCells.Length; i++){
+            if (start.adjacentCells[i] == null){
+                continue;
+            }
+            nextCells.Add(start.adjacentCells[i]);
+            start.adjacentCells[i].parent = start;
+            start.adjacentCells[i].cost = Cell.GetCostDirectionPair(i).a + start.adjacentCells[i].defaultCost;
+            start.adjacentCells[i].direction = Cell.GetCostDirectionPair(i).b;
+        }
+        IterateThroughMap(start, nextCells);
+
+        
     }
-    void Update()
+    private void IterateThroughMap(Cell start, List<Cell> cleanCells){
+        List<Cell> nextCells = new List<Cell>();
+        for (int i = 0; i < cleanCells.Count; i++){
+            for (int j = 0; j < cleanCells[i].adjacentCells.Length; j++){
+                if (cleanCells[i].adjacentCells[j] == null || cleanCells[i].adjacentCells[j].parent != null || cleanCells[i].cost > 100 || cleanCells[i].adjacentCells[j].Equals(start)){
+                    if (cleanCells[i].parent != cleanCells[i].adjacentCells[j] && cleanCells[i].cost + Cell.GetCostDirectionPair(j).a < cleanCells[i].adjacentCells[j].cost){
+                        cleanCells[i].adjacentCells[j].parent = cleanCells[i];
+                        cleanCells[i].adjacentCells[j].cost = cleanCells[i].cost + Cell.GetCostDirectionPair(j).a + cleanCells[i].adjacentCells[j].defaultCost;
+                        cleanCells[i].adjacentCells[j].direction = Cell.GetCostDirectionPair(j).b;
+                    }
+                    continue;
+                }
+                nextCells.Add(cleanCells[i].adjacentCells[j]);
+                cleanCells[i].adjacentCells[j].parent = cleanCells[i];
+                cleanCells[i].adjacentCells[j].cost = cleanCells[i].cost + Cell.GetCostDirectionPair(j).a + cleanCells[i].adjacentCells[j].defaultCost;
+                cleanCells[i].adjacentCells[j].direction = Cell.GetCostDirectionPair(j).b;
+            }
+        }
+        if (nextCells.Count == 0){
+            return;
+        }
+        IterateThroughMap(start, nextCells);
+    }
+
+
+    // public List<int[]> findNeightbors(int x, int y)
+    // {
+    //     List<int[]> neighbors = new List<int[]>();
+    //     for (int i = -1; i < 2; i++)
+    //     {
+    //         for (int j = -1; j < 2; j++)
+    //         {
+    //             if (i + j != 0 && x + i >= 0 && x + i < World.GetLength(0) && y + j >= 0 && y + j < World.GetLength(1)
+    //             && x + i >= targetObject.transform.position.x - scaleXlen && x + i < targetObject.transform.position.x + scaleXlen
+    //             && y + j >= targetObject.transform.position.y - scaleXlen && y + j < targetObject.transform.position.y + scaleYlen
+    //             && !World[x + i, y + j].visited())
+    //             {
+    //                 int[] arr = new int[2];
+    //                 arr[0] = x + i;
+    //                 arr[1] = y + j;
+    //                 neighbors.Add(arr);
+    //             }
+    //         }
+    //     }
+    //     return neighbors;
+    // }
+    private void AlotNeighbors()
     {
-
+        for (int x = xPos; x < World.GetLength(0) + xPos; x++)
+        {
+            for (int y = yPos; y > -World.GetLength(1) + yPos; y--)
+            {
+                Cell[] neighbors = new Cell[8];
+                int additive = 4;
+                for (int a = -1; a <= 1; a++){
+                    for (int b = -1; b <= 1; b++){
+                        if (a == 0 && b == 0){
+                            additive--;
+                            continue;
+                        }
+                        try
+                        {
+                            neighbors[b+a*3+additive] = World[x - xPos + b, -y + yPos + a];
+                        }
+                        catch (System.Exception)
+                        {
+                            neighbors[b+a*3+additive] = null;
+                        }
+                    }
+                }
+                World[x - xPos, -y + yPos].adjacentCells = neighbors;
+            }
+        }
     }
-
 }
