@@ -27,14 +27,14 @@ public class PathFinding2 : MonoBehaviour
         {
             for (int y = yPos; y > -World.GetLength(1) + yPos; y--)
             {
-                Vector3Int pos = new Vector3Int(x, y, 0);
+                Vector3Int pos = new Vector3Int(x, y-1, 0);
                 TileBase tile = Scene.GetTile(pos);
                 
                 World[x - xPos, -(y) + yPos] = new Cell(x - xPos, -(y) + yPos);
                 if (tile){
                     World[x - xPos, -(y) + yPos].defaultCost = 255;
                 }
-                World[x - xPos, -(y) + yPos].InstantiateArrow(prefab, new Vector2(x,y), Quaternion.identity);
+                World[x - xPos, -(y) + yPos].InstantiateArrow(prefab, new Vector2(x+.5f,y-.5f), Quaternion.identity);
             }
         }
         player = FindObjectOfType<Player>();
@@ -54,12 +54,9 @@ public class PathFinding2 : MonoBehaviour
     //     playerX = player.transform.position.x;
     //     playerY = player.transform.position.y;
     // }
-    private void Update(){
+    private void LateUpdate(){
         int playerPosX = (int)Mathf.Floor(player.transform.position.x);
         int playerPosY = (int)Mathf.Ceil(player.transform.position.y);
-
-        int enemyX = (int)Mathf.Floor(transform.position.x);
-        int enemyY = (int)Mathf.Ceil(transform.position.y);
 
         Cell start = null;
         for (int x = xPos; x < World.GetLength(0) + xPos; x++)
@@ -67,9 +64,6 @@ public class PathFinding2 : MonoBehaviour
             for (int y = yPos; y > -World.GetLength(1) + yPos; y--)
             {
                 Cell c = World[x - xPos, -(y) + yPos];
-                if (c.x == (enemyX-xPos) && c.y == (-enemyY+yPos)){
-                    transform.position = new Vector2(transform.position.x + c.direction.x*Time.deltaTime*5, transform.position.y + c.direction.y*Time.deltaTime*5);
-                }
                 c.cost = 0;
                 c.parent = null;
                 if (c.x == (playerPosX-xPos) && c.y == (-playerPosY+yPos)){
@@ -92,22 +86,26 @@ public class PathFinding2 : MonoBehaviour
             start.adjacentCells[i].direction = Cell.GetCostDirectionPair(i).b;
         }
         IterateThroughMap(start, nextCells);
-
-        
     }
     private void IterateThroughMap(Cell start, List<Cell> cleanCells){
         List<Cell> nextCells = new List<Cell>();
         for (int i = 0; i < cleanCells.Count; i++){
             for (int j = 0; j < cleanCells[i].adjacentCells.Length; j++){
-                if (cleanCells[i].adjacentCells[j] == null || cleanCells[i].adjacentCells[j].parent != null || cleanCells[i].cost > 100 || cleanCells[i].adjacentCells[j].Equals(start)){
-                    if (cleanCells[i].parent != cleanCells[i].adjacentCells[j] && cleanCells[i].cost + Cell.GetCostDirectionPair(j).a < cleanCells[i].adjacentCells[j].cost){
+                if (cleanCells[i].adjacentCells[j] == null || cleanCells[i].adjacentCells[j].parent != null || cleanCells[i].cost > 50 || cleanCells[i].adjacentCells[j].Equals(start)){
+                    if (cleanCells[i].adjacentCells[j] != null && cleanCells[i].cost + Cell.GetCostDirectionPair(j).a < cleanCells[i].adjacentCells[j].cost){
                         cleanCells[i].adjacentCells[j].parent = cleanCells[i];
                         cleanCells[i].adjacentCells[j].cost = cleanCells[i].cost + Cell.GetCostDirectionPair(j).a + cleanCells[i].adjacentCells[j].defaultCost;
                         cleanCells[i].adjacentCells[j].direction = Cell.GetCostDirectionPair(j).b;
                     }
                     continue;
                 }
-                nextCells.Add(cleanCells[i].adjacentCells[j]);
+                // if (Cell.GetCostDirectionPair(j).a > 1){
+                //     nextCells.Insert(0,cleanCells[i].adjacentCells[j]);
+                // }else{
+                //     nextCells.Add(cleanCells[i].adjacentCells[j]);
+                // }
+                nextCells.Insert(0,cleanCells[i].adjacentCells[j]);
+                // nextCells.Add(cleanCells[i].adjacentCells[j]);
                 cleanCells[i].adjacentCells[j].parent = cleanCells[i];
                 cleanCells[i].adjacentCells[j].cost = cleanCells[i].cost + Cell.GetCostDirectionPair(j).a + cleanCells[i].adjacentCells[j].defaultCost;
                 cleanCells[i].adjacentCells[j].direction = Cell.GetCostDirectionPair(j).b;
@@ -117,6 +115,26 @@ public class PathFinding2 : MonoBehaviour
             return;
         }
         IterateThroughMap(start, nextCells);
+    }
+
+    public MultiType<float, Vector2> DirectionOfFollower(Vector2 pos){
+        int posX = (int)Mathf.Floor(pos.x);
+        int posY = (int)Mathf.Floor(pos.y);
+        for (int x = xPos; x < World.GetLength(0) + xPos; x++)
+        {
+            for (int y = yPos; y > -World.GetLength(1) + yPos; y--)
+            {
+                Cell c = World[x - xPos, -(y) + yPos];
+                if (c.x == (posX-xPos) && c.y == (-posY+yPos)){
+                    return new MultiType<float, Vector2>(c.cost,new Vector2(c.direction.x, c.direction.y));
+                }
+            }
+        }
+        int i = 0;
+        while(i < 10000){
+            i++;
+        }
+        return new MultiType<float, Vector2>(0, new Vector2(0,0));
     }
 
 

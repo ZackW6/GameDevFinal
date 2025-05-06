@@ -1,11 +1,14 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PathFinding2))]
 public class Enemy : Character
 {
-    Pathfinding pathfinder;
+    PathFinding2 pathfinder;
 
     private Player player;
+
+    [Header("Jump Rules")]
+    [SerializeField] private float jumpCooldown = 0;
+    [SerializeField] private float lastJumpTime = 0;
 
     public override void Awake()
     {
@@ -16,7 +19,7 @@ public class Enemy : Character
         foreach (Item i in inventory.unequippedItems){
             i.Hide(true);
         }
-        pathfinder = GetComponent<Pathfinding>();
+        pathfinder = FindObjectOfType<PathFinding2>();
         player = FindObjectOfType<Player>();
     }
 
@@ -27,6 +30,10 @@ public class Enemy : Character
             Attack("Player");
         }
         transform.rotation = vec.x > 0 ? Quaternion.Euler(new Vector3(0,0,0)) : Quaternion.Euler(new Vector3(0,180,0));
+        if (pathfinder.DirectionOfFollower(transform.position).a < 30){
+            movement.Move(pathfinder.DirectionOfFollower(transform.position).b);
+        }
+        
         //TODO this will eventually be the case, waiting on other classes
         // movement.Move(pathfinder.getMove());
     }

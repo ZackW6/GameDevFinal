@@ -47,7 +47,7 @@ public class Movement : MonoBehaviour
     }
     void FixedUpdate()
     {
-        grounded = Physics2D.Raycast(transform.position, Vector2.down, cd.size.y + cd.offset.y, platLayer); // Checks if player is on ground.
+        grounded = Physics2D.Raycast(cd.bounds.center, Vector2.down, cd.bounds.size.y/2+.13f, platLayer); // Checks if player is on ground.
     }
     // Movement speed control
     private void SpeedControl()
