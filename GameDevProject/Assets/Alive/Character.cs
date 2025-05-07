@@ -11,17 +11,17 @@ public abstract class Character : MonoBehaviour
     public Inventory inventory;
 
     [Header("Stats")]
-    [SerializeField] private float maxHealth = 100;
-    [SerializeField] private float health = 0;
-    [SerializeField] private float protection = 0;
-    [SerializeField] private float attackSpeed = 1;
-    [SerializeField] private float damage = 3;
-    [SerializeField] private float healRate = 1;
+    [SerializeField] protected float maxHealth = 100;
+    [SerializeField] protected float health = 0;
+    [SerializeField] protected float protection = 0;
+    [SerializeField] protected float attackSpeed = 1;
+    [SerializeField] protected float damage = 3;
+    [SerializeField] protected float healRate = 1;
 
-    private float addedMaxHealth;
+    protected float addedMaxHealth;
 
     public AttackRange defaultAttackRange;
-    private Weapon lastUsed;
+    protected Weapon lastUsed;
 
     public bool isAbleToAttack = true;
     public virtual void Awake()
@@ -72,7 +72,7 @@ public abstract class Character : MonoBehaviour
         // }
     }
     
-    public void Attack(float attackSpeed, float damage, AttackRange attackRange, string tag){
+    public virtual void Attack(float attackSpeed, float damage, AttackRange attackRange, string tag){
         if (isAbleToAttack){
             isAbleToAttack = false;
             Invoke(nameof(ResetAttack), attackSpeed);

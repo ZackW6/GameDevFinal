@@ -13,7 +13,7 @@ public class Legs : Item
     }
     public float GetAddedJump(){
         return addedJump;
-    }   
+    }
     public float GetAddedMovement(){
         return movementIncrease;
     }
