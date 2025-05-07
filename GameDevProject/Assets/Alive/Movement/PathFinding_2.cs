@@ -34,7 +34,9 @@ public class PathFinding2 : MonoBehaviour
                 if (tile){
                     World[x - xPos, -(y) + yPos].defaultCost = 255;
                 }
-                World[x - xPos, -(y) + yPos].InstantiateArrow(prefab, new Vector2(x+.5f,y-.5f), Quaternion.identity);
+                if (prefab){
+                    World[x - xPos, -(y) + yPos].InstantiateArrow(prefab, new Vector2(x+.5f,y-.5f), Quaternion.identity);
+                }
             }
         }
         player = FindObjectOfType<Player>();

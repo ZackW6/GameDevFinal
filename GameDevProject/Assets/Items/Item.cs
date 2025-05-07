@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
+using Microsoft.Unity.VisualStudio.Editor;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
 public abstract class Item : DragDrop
@@ -65,7 +67,7 @@ public abstract class Item : DragDrop
     }
 
     public void Hide(bool hide){
-        this.enabled = !hide;
+        GetComponent<UnityEngine.UI.Image>().enabled = !hide;
         rb.simulated = !hide;
         col.enabled = !hide;
     }

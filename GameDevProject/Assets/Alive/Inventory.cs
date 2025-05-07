@@ -17,13 +17,6 @@ public class Inventory : MonoBehaviour
         equippedItems = new List<Item>();
     }
 
-    void Update()
-    {
-        foreach (Item i in unequippedItems){
-            print(i.title);
-        }
-    }
-
     public void addUnequipped(Item unequipped){
         this.unequippedItems.Add(unequipped);
     }

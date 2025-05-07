@@ -5,11 +5,6 @@ public class Enemy : Character
     PathFinding2 pathfinder;
 
     private Player player;
-
-    [Header("Jump Rules")]
-    [SerializeField] private float jumpCooldown = 0;
-    [SerializeField] private float lastJumpTime = 0;
-
     public override void Awake()
     {
         base.Awake();
