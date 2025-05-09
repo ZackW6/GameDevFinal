@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
 [RequireComponent(typeof(CameraManager))]
 [RequireComponent(typeof(PlayerInventory))]
 public class Player : Character
@@ -15,6 +16,8 @@ public class Player : Character
     [SerializeField] private float lastJumpTime = 0;
 
     [SerializeField] private Vector2 targetVector = new Vector2();
+
+    public Text healthDisplay;
 
     public override void Awake()
     {
@@ -41,14 +44,21 @@ public class Player : Character
         {
             Attack("Enemy");
         }
+        
     }
 
+    public void Update()
+    {
+        healthDisplay.text = "Health: " + Mathf.Ceil(health);
+    }
     public override void Kill()
     {
-        GetComponent<SpriteRenderer>().enabled = false;
-        this.enabled = false;
-        GetComponent<Rigidbody2D>().simulated = false;
-        GetComponent<Collider2D>().enabled = false;
-        inventory.Kill();
+            GameManager.instance.Restart();
+        
+        // GetComponent<SpriteRenderer>().enabled = false;
+        // this.enabled = false;
+        // GetComponent<Rigidbody2D>().simulated = false;
+        // GetComponent<Collider2D>().enabled = false;
+        // inventory.Kill();
     }
 }

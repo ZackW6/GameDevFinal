@@ -68,8 +68,8 @@ public abstract class Item : DragDrop
 
     public void Hide(bool hide){
         GetComponent<UnityEngine.UI.Image>().enabled = !hide;
-        rb.simulated = !hide;
-        col.enabled = !hide;
+        GetComponent<Rigidbody2D>().simulated = !hide;
+         GetComponent<Collider2D>().enabled = !hide;
     }
 
     public float GetDurability(){

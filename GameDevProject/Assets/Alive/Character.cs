@@ -12,7 +12,7 @@ public abstract class Character : MonoBehaviour
 
     [Header("Stats")]
     [SerializeField] private float maxHealth = 100;
-    [SerializeField] private float health = 0;
+    [SerializeField] protected float health = 0;
     [SerializeField] private float protection = 0;
     [SerializeField] private float attackSpeed = 1;
     [SerializeField] private float damage = 3;
