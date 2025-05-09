@@ -24,8 +24,6 @@ public abstract class Item : DragDrop
         base.Awake();
         this.rb = this.GetComponent<Rigidbody2D>();
         this.col = this.GetComponent<Collider2D>();
-        rb.simulated = true;
-        col.enabled = true;
         playerInventory = FindObjectOfType<PlayerInventory>();
     }
 
@@ -69,7 +67,7 @@ public abstract class Item : DragDrop
     public void Hide(bool hide){
         GetComponent<UnityEngine.UI.Image>().enabled = !hide;
         GetComponent<Rigidbody2D>().simulated = !hide;
-         GetComponent<Collider2D>().enabled = !hide;
+        GetComponent<Collider2D>().enabled = !hide;
     }
 
     public float GetDurability(){
