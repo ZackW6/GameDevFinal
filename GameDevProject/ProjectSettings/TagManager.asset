@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Cave
   - Enemy
+  - Doors
+  - Key
   layers:
   - Default
   - TransparentFX
