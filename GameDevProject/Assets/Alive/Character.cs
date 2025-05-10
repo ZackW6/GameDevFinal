@@ -87,10 +87,11 @@ public abstract class Character : MonoBehaviour
     }
 
     public virtual void Damage(float amount){
+        print(amount);
         //Run hurt animation
         health -= amount;
         if (health <= 0){
-            Invoke(nameof(Kill), .1f);
+            Invoke(nameof(Kill), .01f);
         }
     }
 

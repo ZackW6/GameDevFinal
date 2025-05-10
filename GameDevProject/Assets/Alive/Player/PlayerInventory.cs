@@ -24,6 +24,11 @@ public class PlayerInventory : Inventory
     }
 
     public override void checkEquipped(){
+        equippedItems.Clear();
+        unequippedItems.Clear();
+        weapons.Clear();
+        consumables.Clear();
+        armors = new MultiType<Head, Chest, Legs>(null,null,null);
         slots.ForEach((data)=>{
             if (data.droppedItem && data.droppedItem is Item){
                 if (data.item == PlayerSlot.extra){

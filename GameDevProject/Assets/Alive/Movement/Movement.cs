@@ -22,6 +22,8 @@ public class Movement : MonoBehaviour
     [SerializeField] private float jumpForce = 1500;
     [SerializeField] private float airMultiplier = .2f;
 
+    public bool flying = false;
+
     [SerializeField] private float airDrag = 4f;
     [SerializeField] private bool grounded;
     [SerializeField] private float currentSpeed;
@@ -47,7 +49,7 @@ public class Movement : MonoBehaviour
     }
     void FixedUpdate()
     {
-        grounded = Physics2D.Raycast(cd.bounds.center, Vector2.down, cd.bounds.size.y/2+.13f, platLayer); // Checks if player is on ground.
+        grounded = Physics2D.Raycast(new Vector3(cd.bounds.center.x,cd.bounds.min.y), Vector2.down, .1f, platLayer) || Physics2D.Raycast(new Vector3(cd.bounds.min.x,cd.bounds.min.y), Vector2.down, .1f, platLayer) ||Physics2D.Raycast(new Vector3(cd.bounds.max.x,cd.bounds.min.y), Vector2.down, .1f, platLayer); // Checks if player is on ground.
     }
     // Movement speed control
     private void SpeedControl()
@@ -58,6 +60,10 @@ public class Movement : MonoBehaviour
     //Meant to be called once per frame in the character class which holds it, using whatever data they give
     public void Move(Vector2 direction)
     {
+        if (flying){
+            rb.AddForce(direction.normalized*moveSpeed, ForceMode2D.Force);
+            return;
+        }
         direction.x = (direction.x < .05f && direction.x > -.05f) ? 0 : direction.x > 0 ? 1 : -1;
         direction.y = (direction.y < .05f && direction.y > -.05f) ? 0 : direction.y > 0 ? 1 : -1;
         if (grounded)

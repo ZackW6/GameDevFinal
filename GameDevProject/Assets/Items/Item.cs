@@ -39,11 +39,12 @@ public abstract class Item : DragDrop
             Drop(true);
         }else{
             Drop(false);
-            Equip();
         }
     }
 
     public void Drop(bool dropped){
+        playerInventory.checkEquipped();
+        FindObjectOfType<Player>().PreformStatCheck();
         this.dropped = dropped;
         if (dropped){
             rb.simulated = true;
@@ -55,10 +56,6 @@ public abstract class Item : DragDrop
             rb.simulated = false;
             col.enabled = false;
         }
-    }
-
-    public void Equip(){
-        playerInventory.checkEquipped();
     }
     public bool IsDropped(){
         return dropped;
