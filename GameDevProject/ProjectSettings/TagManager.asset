@@ -46,9 +46,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Drawing
-    uniqueID: 3407404931
-    locked: 0
   - name: Enemies
     uniqueID: 3989983011
     locked: 0
@@ -63,4 +60,7 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 3359038447
+    locked: 0
+  - name: Drawing
+    uniqueID: 3407404931
     locked: 0
