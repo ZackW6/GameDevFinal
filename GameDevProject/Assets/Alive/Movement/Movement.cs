@@ -21,7 +21,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private float groundDrag = 5f;
 
     [Header("Jump")]
-    [SerializeField] private float jumpForce = 10f;
+    [SerializeField] public float jumpForce = 10f;
     [SerializeField] private float airMultiplier = .2f;
 
     public bool flying = false;

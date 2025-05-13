@@ -48,8 +48,8 @@ public abstract class Character : MonoBehaviour
 
     public virtual void PreformStatCheck(){
         addedMaxHealth = maxHealth + inventory.GetAddedHealth();
-        addedMaxJump = jumpForce + inventory.GetAddedJump();
-        movement.jumpForce = addedMaxJump;
+        // addedMaxJump = jumpForce + inventory.GetAddedJump();
+        // movement.jumpForce = addedMaxJump;
         protection = inventory.GetAddedProtection();
     }
 
