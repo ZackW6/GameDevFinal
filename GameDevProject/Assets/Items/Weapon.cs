@@ -8,9 +8,6 @@ public class Weapon : Item
     public float attackSpeed = 0;
     public float damage = 0;
     public AttackRange attackRange;
-    public override void Awake(){
-        base.Awake();
-    }
 
     public float GetAttackSpeed(){
         return attackSpeed;

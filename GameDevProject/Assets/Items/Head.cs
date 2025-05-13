@@ -5,8 +5,5 @@ using UnityEngine;
 
 public class Head : Item
 {
-    public override void Awake()
-    {
-        base.Awake();
-    }
+    
 }

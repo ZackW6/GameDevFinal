@@ -26,7 +26,7 @@ public abstract class Character : MonoBehaviour
     protected Weapon lastUsed;
 
     public bool isAbleToAttack = true;
-    public virtual void Awake()
+    public virtual void Start()
     {
         addedMaxHealth = maxHealth;
         addedMaxJump = jumpForce;

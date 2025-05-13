@@ -11,9 +11,9 @@ public class Enemy : Character
     [SerializeField] private float maxFollowCost = 30;
     [SerializeField] private float attackFrom = 4;
 
-    public void Start()
+    public override void Start()
     {
-        print(Random.Range(0,2));
+        base.Start();
         if (Random.Range(0,2) == 1){
             int nextRand = Random.Range(0,4);
             GameObject newItem = null;

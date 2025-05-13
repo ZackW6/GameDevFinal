@@ -7,8 +7,9 @@ using UnityEngine;
 public class Key : Item
 {
     [SerializeField] private GameObject go;
-    public void Start()
+    public override void Start()
     {
+        base.Start();
         SetTitle(go.GetComponent<DoorEvent>().keyTag);
         this.tag = this.title;
     }

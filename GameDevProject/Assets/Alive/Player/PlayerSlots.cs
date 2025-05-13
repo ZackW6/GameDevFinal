@@ -9,10 +9,10 @@ public class PlayerSlot : DropSlot
     public Func<Item, bool> item;
 
     private Player player;
-    public override void Awake()
+    public override void Start()
     {
         player = FindObjectOfType<Player>();
-        base.Awake();
+        base.Start();
         switch(type){
             case 0:
                 item = weapon;

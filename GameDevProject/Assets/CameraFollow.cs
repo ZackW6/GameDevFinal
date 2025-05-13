@@ -13,7 +13,7 @@ public class CameraFollow : MonoBehaviour
     private CameraManager camMan;
     private bool isFacingRight;
 
-    private void Awake()
+    private void Start()
     {
         camMan = playerTransform.gameObject.GetComponent<CameraManager>();
 

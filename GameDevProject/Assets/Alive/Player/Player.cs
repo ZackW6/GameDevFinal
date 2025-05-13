@@ -21,9 +21,9 @@ public class Player : Character
 
     public Text healthDisplay;
 
-    public override void Awake()
+    public override void Start()
     {
-        base.Awake();
+        base.Start();
         camMan = GetComponent<CameraManager>();
     }
 

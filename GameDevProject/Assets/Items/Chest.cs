@@ -5,8 +5,5 @@ using UnityEngine;
 
 public class Chest : Item
 {
-    public override void Awake()
-    {
-        base.Awake();
-    }
+
 }

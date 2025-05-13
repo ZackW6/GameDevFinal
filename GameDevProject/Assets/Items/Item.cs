@@ -20,9 +20,9 @@ public abstract class Item : DragDrop
     public float durability = 0;
     public float bonusHealth = 0;
     public float protection = 0;
-    public override void Awake()
+    public override void Start()
     {
-        base.Awake();
+        base.Start();
         this.rb = this.GetComponent<Rigidbody2D>();
         this.col = this.GetComponent<Collider2D>();
         playerInventory = FindObjectOfType<PlayerInventory>();

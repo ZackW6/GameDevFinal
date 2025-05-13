@@ -9,7 +9,7 @@ public class DropSlot : MonoBehaviour, IDropHandler
 {
     private RectTransform rectTransform;
     public DragDrop droppedItem;
-    public virtual void Awake()
+    public virtual void Start()
     {
         rectTransform = GetComponent<RectTransform>();
     }
