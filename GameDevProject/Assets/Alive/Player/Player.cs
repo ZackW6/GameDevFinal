@@ -19,7 +19,7 @@ public class Player : Character
 
     [SerializeField] private Vector2 targetVector = new Vector2();
 
-    public Text healthDisplay;
+    public Text display;
 
     public override void Start()
     {
@@ -52,7 +52,9 @@ public class Player : Character
     public override void Update()
     {
         base.Update();
-        healthDisplay.text = "Health: " + Mathf.Ceil(health);
+        display.text = "Health: " + Mathf.Ceil(health)+"/"+Mathf.Ceil(addedMaxHealth)+"\n"
+        +"MaxJump: "+Mathf.Ceil(movement.GetAddedJump())+"\n"
+        +"MaxMovement: "+Mathf.Ceil(movement.GetAddedMovement());
     }
 
     public override void Attack(float attackSpeed, float damage, AttackRange attackRange, string tag){

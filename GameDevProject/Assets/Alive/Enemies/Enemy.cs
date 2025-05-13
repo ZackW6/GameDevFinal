@@ -34,6 +34,7 @@ public class Enemy : Character
                 newItem = Instantiate(GameManager.instance.legsPrefab,FindObjectOfType<Canvas>().transform);
                 newItem.GetComponent<Legs>().bonusHealth = maxHealth*Random.Range(0.25f,1.25f);
                 newItem.GetComponent<Legs>().addedJump = movement.jumpForce*Random.Range(0.3f,0.8f);
+                newItem.GetComponent<Legs>().movementIncrease = movement.moveSpeed*Random.Range(0.1f,0.2f);
             }
             if (newItem){
                 inventory.addUnequipped(newItem.GetComponent<Item>());

@@ -17,7 +17,7 @@ public class Movement : MonoBehaviour
     private PlayerInventory playerInv;
 
     [Header("Ground Movement")]
-    [SerializeField] private float moveSpeed = 10f;
+    [SerializeField] public float moveSpeed = 10f;
     [SerializeField] private float groundDrag = 5f;
 
     [Header("Jump")]
@@ -102,6 +102,14 @@ public class Movement : MonoBehaviour
             direction = lg ? airMultiplier * (moveSpeed + lg.GetAddedMovement()) * 10f * direction : airMultiplier * moveSpeed * 10f * direction;
         }
         rb.AddForce(direction, ForceMode2D.Force);
+    }
+
+    public float GetAddedJump(){
+        return lg ? jumpForce + lg.GetAddedJump() : jumpForce;
+    }
+
+    public float GetAddedMovement(){
+        return lg ? moveSpeed + lg.GetAddedMovement() : moveSpeed;
     }
 
     public bool IsGrounded()
