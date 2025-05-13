@@ -17,8 +17,10 @@ public abstract class Character : MonoBehaviour
     [SerializeField] protected float attackSpeed = 1;
     [SerializeField] protected float damage = 3;
     [SerializeField] protected float healRate = 1;
+    [SerializeField] protected float jumpForce = 1500;
 
     protected float addedMaxHealth;
+    protected float addedMaxJump;
 
     public AttackRange defaultAttackRange;
     protected Weapon lastUsed;
@@ -27,6 +29,7 @@ public abstract class Character : MonoBehaviour
     public virtual void Awake()
     {
         addedMaxHealth = maxHealth;
+        addedMaxJump = jumpForce;
         this.movement = GetComponent<Movement>();
         this.inventory = GetComponent<Inventory>();
 
@@ -45,6 +48,8 @@ public abstract class Character : MonoBehaviour
 
     public virtual void PreformStatCheck(){
         addedMaxHealth = maxHealth + inventory.GetAddedHealth();
+        addedMaxJump = jumpForce + inventory.GetAddedJump();
+        movement.jumpForce = addedMaxJump;
         protection = inventory.GetAddedProtection();
     }
 
@@ -87,7 +92,6 @@ public abstract class Character : MonoBehaviour
     }
 
     public virtual void Damage(float amount){
-        print(amount);
         //Run hurt animation
         health -= amount;
         if (health <= 0){
