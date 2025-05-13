@@ -15,6 +15,9 @@ public class Inventory : MonoBehaviour
     public Inventory(){
         unequippedItems = new List<Item>();
         equippedItems = new List<Item>();
+        weapons = new List<Weapon>();
+        armors = new MultiType<Head, Chest, Legs>(null, null, null);
+        consumables = new List<Consumable>();
     }
 
     public void addUnequipped(Item unequipped){
@@ -59,16 +62,21 @@ public class Inventory : MonoBehaviour
     public void Kill(){
         PlayerInventory p = FindObjectOfType<PlayerInventory>();
         unequippedItems.ForEach((data)=>{
-            data.transform.position = transform.position;
-            data.Hide(false);
-            p.addDropped(data);
-            data.transform.SetParent(FindObjectOfType<Canvas>().transform);
+            if (data){
+                data.transform.position = transform.position;
+                data.Hide(false);
+                p.addDropped(data);
+                data.transform.SetParent(FindObjectOfType<Canvas>().transform);
+            }
+            
         });
         equippedItems.ForEach((data)=>{
-            data.transform.position = transform.position;
-            data.Hide(false);
-            p.addDropped(data);
-            data.transform.SetParent(FindObjectOfType<Canvas>().transform);
+            if (data){
+                data.transform.position = transform.position;
+                data.Hide(false);
+                p.addDropped(data);
+                data.transform.SetParent(FindObjectOfType<Canvas>().transform);
+            }
         });
         weapons.Clear();
         armors = new MultiType<Head, Chest, Legs>(null, null, null);
@@ -83,6 +91,13 @@ public class Inventory : MonoBehaviour
             addedFromWeapons += w.bonusHealth;
         }
         return (armors.a ? armors.a.bonusHealth : 0) + (armors.b ? armors.b.bonusHealth : 0)  + (armors.c ? armors.c.bonusHealth : 0)  + addedFromWeapons;
+    }
+
+    public float GetAddedJump(){
+        if (!armors.c){
+            return 0;
+        }
+        return armors.c.addedJump;
     }
 
     public float GetAddedProtection(){

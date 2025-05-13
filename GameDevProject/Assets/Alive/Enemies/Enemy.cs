@@ -11,15 +11,44 @@ public class Enemy : Character
     [SerializeField] private float maxFollowCost = 30;
     [SerializeField] private float attackFrom = 4;
 
-    public override void Awake()
+    public void Start()
     {
-        //Give the enemy stuff automatically, should be pretty easy
-        base.Awake();
+        print(Random.Range(0,2));
+        if (Random.Range(0,2) == 1){
+            int nextRand = Random.Range(0,4);
+            GameObject newItem = null;
+            if (nextRand == 0){
+                newItem = Instantiate(GameManager.instance.weaponPrefab,FindObjectOfType<Canvas>().transform);
+                newItem.GetComponent<Weapon>().attackSpeed = attackSpeed*Random.Range(0.8f,1.25f);
+                newItem.GetComponent<Weapon>().damage = damage*Random.Range(0.6f,1.1f);
+            }
+            if (nextRand == 1){
+                newItem = Instantiate(GameManager.instance.headPrefab,FindObjectOfType<Canvas>().transform);
+                newItem.GetComponent<Item>().bonusHealth = maxHealth*Random.Range(0.25f,0.5f);
+            }
+            if (nextRand == 2){
+                newItem = Instantiate(GameManager.instance.chestPrefab,FindObjectOfType<Canvas>().transform);
+                newItem.GetComponent<Item>().bonusHealth = maxHealth*Random.Range(0.25f,1f);
+            }
+            if (nextRand == 3){
+                newItem = Instantiate(GameManager.instance.legsPrefab,FindObjectOfType<Canvas>().transform);
+                newItem.GetComponent<Legs>().bonusHealth = maxHealth*Random.Range(0.25f,1.25f);
+                newItem.GetComponent<Legs>().addedJump = movement.jumpForce*Random.Range(0.3f,0.8f);
+            }
+            if (newItem){
+                inventory.addUnequipped(newItem.GetComponent<Item>());
+            }
+        }
+        
         foreach (Item i in inventory.equippedItems){
-            i.Hide(true);
+            if (i){
+                i.Hide(true);
+            }
         }
         foreach (Item i in inventory.unequippedItems){
-            i.Hide(true);
+            if(i){
+                i.Hide(true);
+            }
         }
         cd = GetComponent<Collider2D>();
         pathfinder = FindObjectOfType<PathFinding2>();
