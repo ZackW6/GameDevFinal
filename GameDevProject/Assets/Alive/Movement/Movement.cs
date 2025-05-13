@@ -13,13 +13,15 @@ public class Movement : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private BoxCollider2D cd;
     [SerializeField] private LayerMask platLayer;
+    [SerializeField] private Legs lg;
+    private PlayerInventory playerInv;
 
     [Header("Ground Movement")]
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float groundDrag = 5f;
 
     [Header("Jump")]
-    [SerializeField] private float jumpForce = 1500;
+    [SerializeField] private float jumpForce = 10f;
     [SerializeField] private float airMultiplier = .2f;
 
     public bool flying = false;
@@ -37,34 +39,46 @@ public class Movement : MonoBehaviour
         rb.freezeRotation = true;
         rb.drag = 5;//grounded ? groundDrag : airDrag; //Calculates drag based on if entity is in air or not
         defaultGrav = rb.gravityScale;
+        if (gameObject.GetComponent<Player>())
+        {
+            playerInv = GetComponent<PlayerInventory>();
+        }
     }
 
     private void Update()
     {
         SpeedControl();
-        if(rb.velocity.y < 0){
+        if (rb.velocity.y < 0)
+        {
             rb.gravityScale = defaultGrav * 1.5f;
-        }else{
+        }
+        else
+        {
             rb.gravityScale = defaultGrav;
+        }
+        if (playerInv)
+        {
+            lg = playerInv.armors.c;
         }
 
         currentSpeed = rb.velocity.x; // Test code so you can view in inspector
     }
     void FixedUpdate()
     {
-        grounded = Physics2D.Raycast(new Vector3(cd.bounds.center.x,cd.bounds.min.y), Vector2.down, .1f, platLayer) || Physics2D.Raycast(new Vector3(cd.bounds.min.x,cd.bounds.min.y), Vector2.down, .1f, platLayer) ||Physics2D.Raycast(new Vector3(cd.bounds.max.x,cd.bounds.min.y), Vector2.down, .1f, platLayer); // Checks if player is on ground.
+        grounded = Physics2D.Raycast(new Vector3(cd.bounds.center.x, cd.bounds.min.y), Vector2.down, .1f, platLayer) || Physics2D.Raycast(new Vector3(cd.bounds.min.x, cd.bounds.min.y), Vector2.down, .1f, platLayer) || Physics2D.Raycast(new Vector3(cd.bounds.max.x, cd.bounds.min.y), Vector2.down, .1f, platLayer); // Checks if player is on ground.
     }
     // Movement speed control
     private void SpeedControl()
     {
-        rb.velocity = new Vector2(Math.Clamp(rb.velocity.x, -moveSpeed, moveSpeed), rb.velocity.y);
+        rb.velocity = lg ? new Vector2(Math.Clamp(rb.velocity.x, -moveSpeed - lg.GetAddedMovement(), moveSpeed + lg.GetAddedMovement()), rb.velocity.y) : new Vector2(Math.Clamp(rb.velocity.x, -moveSpeed, moveSpeed), rb.velocity.y);
     }
 
     //Meant to be called once per frame in the character class which holds it, using whatever data they give
     public void Move(Vector2 direction)
     {
-        if (flying){
-            rb.AddForce(direction.normalized*moveSpeed, ForceMode2D.Force);
+        if (flying)
+        {
+            rb.AddForce(direction.normalized * moveSpeed, ForceMode2D.Force);
             return;
         }
         direction.x = (direction.x < .05f && direction.x > -.05f) ? 0 : direction.x > 0 ? 1 : -1;
@@ -76,22 +90,18 @@ public class Movement : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, 0);
             }
 
-            direction.x *= moveSpeed * 10f;
+            direction.x *= lg ? (moveSpeed + lg.GetAddedMovement()) * 10f : moveSpeed * 10f;
             if (direction.y > 0)
             {
-                direction.y *= jumpForce;
+                direction.y *= lg ? (jumpForce + lg.GetAddedJump()) * 100f : jumpForce * 100f;
             }
         }
         else
         {
             direction.y = 0;
-            direction = airMultiplier * moveSpeed * 10f * direction;
+            direction = lg ? airMultiplier * (moveSpeed + lg.GetAddedMovement()) * 10f * direction : airMultiplier * moveSpeed * 10f * direction;
         }
         rb.AddForce(direction, ForceMode2D.Force);
-        // Vector2 moveDirection = Vector2.right * kHorizontal; // Uses user input to find what direction player is moving
-
-        // if (grounded) rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode2D.Force); // Speed while grounded
-        // else if (!grounded) rb.AddForce(moveDirection.normalized * moveSpeed * airMultiplier, ForceMode2D.Force); // Speed while in Air(Maintains the momentum before in air)
     }
 
     public bool IsGrounded()

@@ -122,7 +122,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.010245204, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -133,7 +133,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.77, y: 9.6}
+  m_Size: {x: 2.7495096, y: 9.6}
   m_EdgeRadius: 0
 --- !u!50 &6824674158953548220
 Rigidbody2D:
@@ -179,9 +179,10 @@ MonoBehaviour:
   platLayer:
     serializedVersion: 2
     m_Bits: 64
+  lg: {fileID: 0}
   moveSpeed: 10
   groundDrag: 5
-  jumpForce: 1000
+  jumpForce: 10
   airMultiplier: 1
   flying: 0
   airDrag: 5
@@ -218,11 +219,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movement: {fileID: 0}
   inventory: {fileID: 0}
-  maxHealth: 300
-  health: 300
+  maxHealth: 400
+  health: 400
   protection: 0
   attackSpeed: 0.1
-  damage: 3
+  damage: 8
   healRate: 5
   defaultAttackRange: {fileID: 1830529587966984370}
   isAbleToAttack: 1

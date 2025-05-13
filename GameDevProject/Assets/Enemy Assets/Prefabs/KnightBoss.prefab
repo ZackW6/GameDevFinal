@@ -179,9 +179,10 @@ MonoBehaviour:
   platLayer:
     serializedVersion: 2
     m_Bits: 64
+  lg: {fileID: 0}
   moveSpeed: 3
   groundDrag: 5
-  jumpForce: 1000
+  jumpForce: 10
   airMultiplier: 1
   flying: 0
   airDrag: 5
