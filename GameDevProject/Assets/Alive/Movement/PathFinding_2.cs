@@ -122,19 +122,15 @@ public class PathFinding2 : MonoBehaviour
     public MultiType<float, Vector2> DirectionOfFollower(Vector2 pos){
         int posX = (int)Mathf.Floor(pos.x);
         int posY = (int)Mathf.Floor(pos.y);
-        for (int x = xPos; x < World.GetLength(0) + xPos; x++)
-        {
-            for (int y = yPos; y > -World.GetLength(1) + yPos; y--)
-            {
-                Cell c = World[x - xPos, -(y) + yPos];
-                if (c.x == (posX-xPos) && c.y == (-posY+yPos)){
-                    return new MultiType<float, Vector2>(c.cost,new Vector2(c.direction.x, c.direction.y));
-                }
-            }
+        Cell c;
+        try{
+            c = World[posX-xPos,-posY+yPos];
+        }catch(Exception){
+            return new MultiType<float, Vector2>(0, new Vector2(0,0));
         }
-        int i = 0;
-        while(i < 10000){
-            i++;
+        
+        if (c != null){
+            return new MultiType<float, Vector2>(c.cost,new Vector2(c.direction.x, c.direction.y));
         }
         return new MultiType<float, Vector2>(0, new Vector2(0,0));
     }

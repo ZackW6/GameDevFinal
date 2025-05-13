@@ -53,10 +53,16 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         container = slot;
         transform.SetParent(slot.transform);
         transform.position = slot.transform.position;
+        transform.rotation = Quaternion.identity;
     }
     
     public virtual void OnPointerDown(PointerEventData eventData)
     {
 
+    }
+
+    public void LateUpdate()
+    {
+        // transform.rotation = Quaternion.identity;
     }
 }
