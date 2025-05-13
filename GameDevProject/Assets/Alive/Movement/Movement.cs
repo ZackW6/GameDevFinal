@@ -32,6 +32,9 @@ public class Movement : MonoBehaviour
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         cd = gameObject.GetComponent<BoxCollider2D>();
+        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        rb.freezeRotation = true;
         rb.drag = 5;//grounded ? groundDrag : airDrag; //Calculates drag based on if entity is in air or not
         defaultGrav = rb.gravityScale;
     }

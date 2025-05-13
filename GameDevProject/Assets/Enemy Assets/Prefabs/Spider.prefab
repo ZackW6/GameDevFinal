@@ -121,7 +121,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6452375777026932441}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -76.22, y: 9.82, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
@@ -213,7 +213,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.015271246, y: 0.030550241}
+  m_Offset: {x: 0.0060934424, y: -0.0061478615}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -224,7 +224,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.9612107, y: 4.102059}
+  m_Size: {x: 3.8577585, y: 4.0030346}
   m_EdgeRadius: 0
 --- !u!50 &8216189342172922063
 Rigidbody2D:
@@ -315,7 +315,6 @@ MonoBehaviour:
   attackSpeed: 1
   damage: 5
   healRate: 1
-  flying: 0
   defaultAttackRange: {fileID: 523490243098920293}
   isAbleToAttack: 1
   maxFollowCost: 40
