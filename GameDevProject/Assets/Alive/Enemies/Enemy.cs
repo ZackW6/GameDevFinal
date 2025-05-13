@@ -19,8 +19,8 @@ public class Enemy : Character
             GameObject newItem = null;
             if (nextRand == 0){
                 newItem = Instantiate(GameManager.instance.weaponPrefab,FindObjectOfType<Canvas>().transform);
-                newItem.GetComponent<Weapon>().attackSpeed = attackSpeed*Random.Range(0.8f,1.25f);
-                newItem.GetComponent<Weapon>().damage = damage*Random.Range(0.6f,1.1f);
+                newItem.GetComponent<Weapon>().attackSpeed = .3f;
+                newItem.GetComponent<Weapon>().damage = damage*Random.Range(0.8f,1.5f);
             }
             if (nextRand == 1){
                 newItem = Instantiate(GameManager.instance.headPrefab,FindObjectOfType<Canvas>().transform);
