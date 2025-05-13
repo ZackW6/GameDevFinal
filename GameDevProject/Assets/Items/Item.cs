@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
@@ -27,29 +28,38 @@ public abstract class Item : DragDrop
         playerInventory = FindObjectOfType<PlayerInventory>();
     }
 
-    public override void OnBeginDrag(PointerEventData data){
+    public override void OnBeginDrag(PointerEventData data)
+    {
         base.OnBeginDrag(data);
         playerInventory.addDropped(this);
         Drop(false);
     }
 
-    public override void OnEndDrag(PointerEventData data){
+    public override void OnEndDrag(PointerEventData data)
+    {
         base.OnEndDrag(data);
-        if (!container){
+        if (!container)
+        {
             Drop(true);
-        }else{
+        }
+        else
+        {
             Drop(false);
         }
     }
 
-    public void Drop(bool dropped){
+    public void Drop(bool dropped)
+    {
         playerInventory.checkEquipped();
         FindObjectOfType<Player>().PreformStatCheck();
         this.dropped = dropped;
-        if (dropped){
+        if (dropped)
+        {
             rb.simulated = true;
             col.enabled = true;
-        }else{
+        }
+        else
+        {
             transform.rotation = Quaternion.identity;
             rb.velocity = new Vector2();
             rb.angularVelocity = 0;
@@ -57,23 +67,32 @@ public abstract class Item : DragDrop
             col.enabled = false;
         }
     }
-    public bool IsDropped(){
+    public bool IsDropped()
+    {
         return dropped;
     }
 
-    public void Hide(bool hide){
+    public void Hide(bool hide)
+    {
         GetComponent<UnityEngine.UI.Image>().enabled = !hide;
         GetComponent<Rigidbody2D>().simulated = !hide;
         GetComponent<Collider2D>().enabled = !hide;
     }
 
-    public float GetDurability(){
+    public float GetDurability()
+    {
         return durability;
     }
-    public float GetBonusHealth(){
+    public float GetBonusHealth()
+    {
         return bonusHealth;
     }
-        public float GetProtection(){
+    public float GetProtection()
+    {
         return protection;
+    }
+    public void SetTitle(String name)
+    {
+        this.title = name;
     }
 }

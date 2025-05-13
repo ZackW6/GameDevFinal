@@ -13,9 +13,8 @@ using UnityEngine.Tilemaps;
 public class DoorEvent : MonoBehaviour
 {
     public List<Vector3Int> tilesToDestroy;
-    public event UnityAction act;
     private Tilemap tilemap;
-    [SerializeField] private TagField doorTag;
+    public String keyTag;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,42 +23,34 @@ public class DoorEvent : MonoBehaviour
 
     private void DoorOpen()
     {
-        for (int i = 0; i < tilesToDestroy.Count; i++)
-        {
-            tilemap.SetTile(tilesToDestroy[i], null);
-        }
+        for (int i = 0; i < tilesToDestroy.Count; i++) tilemap.SetTile(tilesToDestroy[i], null);
+        Destroy(this.gameObject);
     }
 
     private void DoorCheck(GameObject go)
     {
-        foreach (Item x in go.GetComponent<Inventory>().equippedItems)
+        PlayerInventory playerInv = go.GetComponent<PlayerInventory>();
+        if (playerInv.equippedItems.Find(x => x.title == keyTag))
         {
-            if (x.Equals("Key"))
-            {
-                // EventManager.DoorOpen
-
-            }
+            DoorOpen();
+            Destroy(playerInv.equippedItems.Find(x => x.title == keyTag).gameObject);
         }
-        // delete key from inventory
-        // go.GetComponent<Inventory>().equippedItems.Find
+        else if (playerInv.unequippedItems.Find(x => x.title == keyTag))
+        {
+            DoorOpen();
+            Destroy(playerInv.unequippedItems.Find(x => x.title == keyTag).gameObject);
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Key"))
+        if (collision.CompareTag(keyTag))
         {
-            // EventManager.DoorOpen
             DoorOpen();
+            Destroy(collision.gameObject);
         }
         else if (collision.CompareTag("Player"))
         {
             DoorCheck(collision.gameObject);
         }
-
-        // if (collision.CompareTag("Doors"))
-        // {
-        //     tilesToDestroy.Add(collision.gameObject.transform.ConvertTo<Vector3Int>());
-        //     print("ahhhh");
-        // }
     }
-
 }
