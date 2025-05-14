@@ -52,10 +52,10 @@ public class PlayerSlot : DropSlot
     {
         if (eventData.pointerDrag && eventData.pointerDrag.GetComponent<Item>() && item.Invoke(eventData.pointerDrag.GetComponent<Item>())){
             eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
-            if (eventData.pointerDrag.GetComponent<DragDrop>()){
-                eventData.pointerDrag.GetComponent<DragDrop>().SetContainer(this);
-                droppedItem = eventData.pointerDrag.GetComponent<DragDrop>();
-            }
+            eventData.pointerDrag.GetComponent<DragDrop>().SetContainer(this);
+            droppedItem.GetComponent<DragDrop>().SetContainer(null);
+            droppedItem.transform.SetParent(FindObjectOfType<Canvas>().transform);
+            droppedItem = eventData.pointerDrag.GetComponent<DragDrop>();
         }
         player.PreformStatCheck();
     }

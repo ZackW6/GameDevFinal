@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
 using Microsoft.Unity.VisualStudio.Editor;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -16,6 +17,7 @@ public abstract class Item : DragDrop
     private Rigidbody2D rb;
     private Collider2D col;
     private PlayerInventory playerInventory;
+    public Text stats;
 
     public float durability = 0;
     public float bonusHealth = 0;
@@ -26,6 +28,23 @@ public abstract class Item : DragDrop
         this.rb = this.GetComponent<Rigidbody2D>();
         this.col = this.GetComponent<Collider2D>();
         playerInventory = FindObjectOfType<PlayerInventory>();
+        WriteStats();
+        stats.enabled = false;
+    }
+    public override void Update()
+    {
+        base.Update();
+        Vector3 mousePos;
+        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, Input.mousePosition, Camera.main, out mousePos)){
+            print(Input.mousePosition+"   "+mousePos);
+            stats.enabled = true;
+        }else{
+            stats.enabled = false;
+        }
+    }
+
+    public virtual void WriteStats(){
+        stats.text = "Health: "+bonusHealth;
     }
 
     public override void OnBeginDrag(PointerEventData data)
@@ -38,12 +57,9 @@ public abstract class Item : DragDrop
     public override void OnEndDrag(PointerEventData data)
     {
         base.OnEndDrag(data);
-        if (!container)
-        {
+        if (!container){
             Drop(true);
-        }
-        else
-        {
+        }else{
             Drop(false);
         }
     }

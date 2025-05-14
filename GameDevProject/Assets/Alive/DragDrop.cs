@@ -5,15 +5,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 [RequireComponent(typeof(CanvasGroup))]
+[RequireComponent(typeof(RectTransform))]
 public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    private RectTransform rectTransform;
-    private CanvasGroup canvasGroup;
+    protected RectTransform rectTransform;
+    protected CanvasGroup canvasGroup;
     protected DropSlot container = null;
     protected bool isDragged = false;
     protected PointerEventData lastData = null;
 
-    void Update(){
+    public virtual void Update(){
         if (isDragged && lastData != null){
             Vector3 mousePos;
             if (RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, lastData.position, lastData.pressEventCamera, out mousePos))
