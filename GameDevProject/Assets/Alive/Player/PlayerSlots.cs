@@ -50,11 +50,9 @@ public class PlayerSlot : DropSlot
 
     public override void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag && eventData.pointerDrag.GetComponent<Item>() && item.Invoke(eventData.pointerDrag.GetComponent<Item>())){
+        if (eventData.pointerDrag && eventData.pointerDrag.GetComponent<Item>() && item.Invoke(eventData.pointerDrag.GetComponent<Item>()) && !droppedItem){
             eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
             eventData.pointerDrag.GetComponent<DragDrop>().SetContainer(this);
-            droppedItem.GetComponent<DragDrop>().SetContainer(null);
-            droppedItem.transform.SetParent(FindObjectOfType<Canvas>().transform);
             droppedItem = eventData.pointerDrag.GetComponent<DragDrop>();
         }
         player.PreformStatCheck();

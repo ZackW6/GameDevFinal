@@ -13,4 +13,8 @@ public class Key : Item
         SetTitle(go.GetComponent<DoorEvent>().keyTag);
         this.tag = this.title;
     }
+
+    public override void WriteStats(){
+        stats.text = "";
+    }
 }

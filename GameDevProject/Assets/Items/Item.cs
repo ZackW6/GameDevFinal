@@ -36,11 +36,22 @@ public abstract class Item : DragDrop
         base.Update();
         Vector3 mousePos;
         if (RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, Input.mousePosition, Camera.main, out mousePos)){
-            print(Input.mousePosition+"   "+mousePos);
-            stats.enabled = true;
-        }else{
-            stats.enabled = false;
+            if (PointInBounds(new Vector2(mousePos.x, mousePos.y))){
+                stats.enabled = true;
+            }else{
+                stats.enabled = false;
+            }
         }
+    }
+
+    private bool PointInBounds(Vector2 coords){
+        if (coords.x > transform.position.x - rectTransform.lossyScale.x &&
+            coords.x < transform.position.x + rectTransform.lossyScale.x &&
+            coords.y > transform.position.y - rectTransform.lossyScale.y &&
+            coords.y < transform.position.y + rectTransform.lossyScale.y ){
+            return true;
+        }
+        return false;
     }
 
     public virtual void WriteStats(){
