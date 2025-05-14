@@ -13,4 +13,7 @@ public class Legs : Item
     public float GetAddedMovement(){
         return movementIncrease;
     }
+    public override void WriteStats(){
+        stats.text = "Health: "+bonusHealth+"\n"+"JumpBoost: "+addedJump+"\n"+"MovementBoost: "+movementIncrease;
+    }
 }
